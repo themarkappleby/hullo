@@ -7,7 +7,6 @@
   "devDependencies": {
     "@react-three/drei": "9.97.3",
     "@react-three/fiber": "8.15.16",
-    "gh-pages": "^6.1.1",
     "leva": "0.9.35",
     "peerjs": "^1.5.2",
     "r3f-pack": "2.7.0",
@@ -20,7 +19,7 @@
     "dev": "r3f-pack start",
     "build": "r3f-pack build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "aws s3 sync build s3://www.rally-meet.online"
   },
   "repository": "https://github.com/themarkappleby/rally.git",
   "author": "Mark Appleby <mark.appleby@shopify.com>",
