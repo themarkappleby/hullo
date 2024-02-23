@@ -17,9 +17,10 @@
   "scripts": {
     "prepare": "npx crlf --set=LF node_modules/.bin/r3f-pack",
     "dev": "r3f-pack start",
-    "build": "r3f-pack build",
+    "build": "rm -r build && r3f-pack build",
     "predeploy": "npm run build",
-    "deploy": "aws s3 sync build s3://www.rally-meet.online"
+    "deploy": "aws s3 sync build s3://www.rally-meet.online --delete",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id EW00A0KIZF8ZB --paths '/*'"
   },
   "repository": "https://github.com/themarkappleby/rally.git",
   "author": "Mark Appleby <mark.appleby@shopify.com>",
