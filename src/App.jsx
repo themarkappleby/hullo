@@ -12,7 +12,7 @@ import styles from './styles'
 
 // const RATIO = 0.5625; // 16:9
 const RATIO = 0.75; // 4:3
-const PEER_UID = 'rally-chat';
+const PEER_UID = 'hullo';
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const urlParams = new URLSearchParams(window.location.search);
 const hostParam = urlParams.get('host');
@@ -23,7 +23,7 @@ let peer;
 let conn;
 
 export default function App() {
-  const gltf = useGLTF('/rally/models/scene-transformed.glb')
+  const gltf = useGLTF('/models/scene-transformed.glb')
   const octree = useOctree(gltf.scene)
   const [otherCoordinates, setOtherCoordinates] = useState({
     position: {x: 0, y: 0.75, z: 0},
@@ -138,7 +138,7 @@ export default function App() {
       ) : (
         <div css={styles.landing}>
           <div css={styles.inner}>
-            <img css={styles.logo} src="/rally/img/logo.svg" alt="Rally logo" />
+            <img css={styles.logo} src="/img/logo.svg" alt="Rally logo" />
             {!connecting && (
               <button css={styles.invite} onClick={() => copy(hostAddress)}>
                 Invite
