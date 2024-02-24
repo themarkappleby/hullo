@@ -138,7 +138,6 @@ export default function App() {
       ) : (
         <div css={styles.landing}>
           <div css={styles.inner}>
-            <img css={styles.logo} src="/img/logo.svg" alt="Rally logo" />
             {!connecting && (
               <button css={styles.invite} onClick={() => copy(hostAddress)}>
                 Invite
