@@ -17,7 +17,7 @@ export default gltf => {
         shadow-camera-top={30}
         shadow-camera-bottom={-30}
       />
-      <Environment files="/img/rustig_koppie_puresky_1k.hdr" background />
+      <Environment files="/images/rustig_koppie_puresky_1k.hdr" background />
       <group dispose={null}>
         <mesh castShadow receiveShadow geometry={ref.geometry} material={ref.material} position={[1.74, 1.04, 24.97]} />
       </group>

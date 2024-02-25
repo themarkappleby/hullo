@@ -16,12 +16,32 @@ const styles = {
         gap: 20px;
         align-items: center;
     `,
-    video: css`
+    videoWrapper: css`
+        position: relative;
         width: 100%;
         aspect-ratio: 16 / 9;
         background: black;
         border-radius: 8px;
+        overflow: hidden;
         box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+        p {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            opacity: 0.4;
+            z-index: 1;
+        }
+    `,
+    video: css`
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        position: relative;
+        z-index: 2;
     `,
     notice: css`
         border: 1px solid #90e0e0;

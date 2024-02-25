@@ -47,6 +47,11 @@ export default function App() {
   }
 
   useEffect(() => {
+    getUserMedia({video: { width: 1920, height: 1080 }, audio: true}, newStream => {
+      videoRef.current.srcObject = newStream;
+      videoRef.current.play();
+    });
+
     if (!peer) {
       peer = new Peer(`${PEER_UID}-${localId}`);
       peer.on('open', id => {
@@ -109,9 +114,12 @@ export default function App() {
   return (
     <>
       <div css={styles.preview}>
-        <video css={styles.video} ref={videoRef} />
+        <div css={styles.videoWrapper}>
+          <video css={styles.video} ref={videoRef} />
+          <p>Please allow camera and microphone access</p>
+        </div>
         <div css={styles.notice}>
-          👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera.
+          👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera
         </div>
       </div>
       {connected ? (
@@ -147,7 +155,7 @@ export default function App() {
           ) : (
             <>
               <main css={styles.main}>
-                <img css={styles.logo} src="/img/hullo-logo.svg" alt="Hullo logo" />
+                <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
                 <h1>Spacial video conferencing</h1>
                 <h2>In-office style collaboration for distributed teams</h2>
                 <div css={styles.buttonGroup}>
