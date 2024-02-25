@@ -1,63 +1,92 @@
 import { css } from '@emotion/react'
 
+const primary = '#3262d6';
+const primaryActive = '#193d93';
+
 const styles = {
-    video: css`
+    preview: css`
         position: absolute;
-        top: 0;
-        right: 0;
-        width: 992px;
-        height: 558px;
-        display: none;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 250px;
         z-index: 1;
+        width: 600px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    `,
+    video: css`
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: black;
+        border-radius: 8px;
+        box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+    `,
+    notice: css`
+        border: 1px solid #90e0e0;
+        background-color: rgba(144,224,224,0.1);
+        border-radius: 14px;
+        font-size: 14px;
+        padding: 5px 10px;
+        text-align: center;
+        line-height: 1.3;
     `,
     landing: css`
         height: 100vh;
-        background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
         position: relative;
         overflow: hidden;
-        input {
-            font-size: 4rem;
-            text-align: center;
-            width: 170px;
-            border-radius: 4px;
-            border: 1px solid #000;
-            appearance: none;
-        }
-    `,
-    inner: css`
         display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
         flex-direction: column;
-        background: #1A1A1A;
-        height: calc(100vh - 20px);
-        overflow: hidden;
-        border-radius: 8px;
-        margin: 10px;
+        font-family: helvetica, sans-serif;
     `,
-    invite: css`
-        display: inline-block;
-        outline: 0;
-        border: 0;
-        cursor: pointer;
-        background: #996cf2;
-        color: white;
-        border-radius: 8px;
-        margin-top: 50px;
-        padding: 14px 24px 16px;
-        font-size: 1.5rem;
-        font-weight: 700;
-        user-select: none;
-        line-height: 1;
-        transition: all 0.4s cubic-bezier(.47,1.64,.41,.8);
-        :hover{
-            transform: scale(1.05);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    main: css`
+        padding-left: 300px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            max-width: 800px;
         }
-        :active{
-            transform: scale(1);
-            box-shadow: none;
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 200;
+            margin-bottom: 40px;
+            color: #5f6368;
+        }
+    `,
+    logo: css`
+        margin-bottom: 20px;
+        max-width: 120px;
+    `,
+    buttonGroup: css`
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+    `,
+    button: css`
+        appearance: none;
+        background: ${primary};
+        border: 0;
+        font-size: 1rem;
+        color: white;
+        border-radius: 50px;
+        padding: 16px 25px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+        &:hover {
+            background: ${primaryActive}
+        }
+        &.plain {
+            color: ${primary};
+            background: transparent;
+            &:hover {
+                color: ${primaryActive};
+                background: #f5f5f5;
+            }
         }
     `,
     message: css`
@@ -76,10 +105,6 @@ const styles = {
         &.show {
             opacity: 1;
         }
-    `,
-    logo: css`
-        width: 300px;
-        user-select: none;
     `,
     toast: css`
         background: black;
