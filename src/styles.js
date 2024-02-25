@@ -4,17 +4,58 @@ const primary = '#3262d6';
 const primaryActive = '#193d93';
 
 const styles = {
+    landing: css`
+        height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        font-family: helvetica, sans-serif;
+        align-items: center;
+        justify-content: center;
+        gap: 150px;
+        max-width: 1400px;
+        padding: 0 50px;
+        margin: 0 auto;
+        @media screen and (max-width: 1080px) {
+            flex-direction: column-reverse;
+            gap: 50px;
+            height: auto;
+            max-width: 600px;
+            padding: 40px 50px;
+        }
+        @media screen and (max-width: 500px) {
+            padding: 40px 20px;
+        }
+    `,
     preview: css`
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 250px;
-        z-index: 1;
-        width: 600px;
+        max-width: 600px;
+        min-width: 300px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         gap: 20px;
         align-items: center;
+    `,
+    main: css`
+        flex-direction: column;
+        flex: 1;
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            max-width: 800px;
+            @media screen and (max-width: 500px) {
+                font-size: 2.5rem;
+            }
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 200;
+            margin-bottom: 40px;
+            color: #5f6368;
+            @media screen and (max-width: 500px) {
+                font-size: 1.2rem;
+            }
+        }
     `,
     videoWrapper: css`
         position: relative;
@@ -52,32 +93,6 @@ const styles = {
         text-align: center;
         line-height: 1.3;
     `,
-    landing: css`
-        height: 100vh;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        font-family: helvetica, sans-serif;
-    `,
-    main: css`
-        padding-left: 300px;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        h1 {
-            font-size: 4rem;
-            margin: 0;
-            max-width: 800px;
-        }
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 200;
-            margin-bottom: 40px;
-            color: #5f6368;
-        }
-    `,
     logo: css`
         margin-bottom: 20px;
         max-width: 120px;
@@ -93,7 +108,7 @@ const styles = {
         border: 0;
         font-size: 1rem;
         color: white;
-        border-radius: 50px;
+        border-radius: 25px;
         padding: 16px 25px;
         cursor: pointer;
         transition: all 0.1s ease-in-out;
@@ -122,11 +137,13 @@ const styles = {
         right: 30px;
         opacity: 0;
         transition: all 0.5s ease-in-out;
+        display: none;
         &.show {
             opacity: 1;
         }
     `,
     toast: css`
+        display: none;
         background: black;
         user-select: none;
         color: white;

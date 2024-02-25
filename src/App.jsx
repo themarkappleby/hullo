@@ -113,15 +113,6 @@ export default function App() {
 
   return (
     <>
-      <div css={styles.preview}>
-        <div css={styles.videoWrapper}>
-          <video css={styles.video} ref={videoRef} />
-          <p>Please allow camera and microphone access</p>
-        </div>
-        <div css={styles.notice}>
-          👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera
-        </div>
-      </div>
       {connected ? (
         <Canvas shadows dpr={[2, 2]}>
           <Stage {...gltf} />
@@ -150,19 +141,31 @@ export default function App() {
         </Canvas>
       ) : (
         <div css={styles.landing}>
+
+          <div css={styles.preview}>
+            <div css={styles.videoWrapper}>
+              <video css={styles.video} ref={videoRef} />
+              <p>Please allow camera and microphone access</p>
+            </div>
+            <div css={styles.notice}>
+              👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera
+            </div>
+          </div>
+
+          <main css={styles.main}>
+            <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
+            <h1>Spacial video conferencing</h1>
+            <h2>In-office style collaboration for distributed teams</h2>
+            <div css={styles.buttonGroup}>
+              <button css={styles.button} onClick={() => copy(hostAddress)}>Start meeting</button>
+              <button css={styles.button} className="plain">Enter meeting code</button>
+            </div>
+          </main>
+
           {connecting ? (
             <h1 style={{padding: '50px'}}>Connecting...</h1>
           ) : (
             <>
-              <main css={styles.main}>
-                <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
-                <h1>Spacial video conferencing</h1>
-                <h2>In-office style collaboration for distributed teams</h2>
-                <div css={styles.buttonGroup}>
-                  <button css={styles.button} onClick={() => copy(hostAddress)}>Start meeting</button>
-                  <button css={styles.button} className="plain">Enter meeting code</button>
-                </div>
-              </main>
               <div css={styles.message} className={copied ? 'show' : ''}>
                 The invite link has been copied to your clipboard. Share it with a friend to start a call.
               </div>
