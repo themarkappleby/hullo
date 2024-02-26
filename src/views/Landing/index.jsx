@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 const urlParams = new URLSearchParams(window.location.search);
 const meetingCodeParam = urlParams.get('meeting-code');
 
-const Landing = ({onStart, onJoin}) => {
+const Landing = ({onStart, onJoin, onStream}) => {
     const [enteringCode, setEnteringCode] = useState(!!meetingCodeParam);
     const [meetingCode, setMeetingCode] = useState(meetingCodeParam || '');
     const videoRef = useRef();
@@ -16,6 +16,7 @@ const Landing = ({onStart, onJoin}) => {
         navigator.mediaDevices
             .getUserMedia({video: { width: 1920, height: 1080 }, audio: true})
             .then((stream) => {
+                onStream(stream);
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
             })

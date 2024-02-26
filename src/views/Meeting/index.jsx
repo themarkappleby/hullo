@@ -5,17 +5,17 @@ import Stage from './Stage'
 import ActiveParticipant from './ActiveParticipant'
 import HUD from './HUD';
 
-const Meeting = () => {
+const Meeting = ({ onMove, participants }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
-    const sendCoordinates = (e) => {console.log(e)}
     return (
       <>
         <Canvas shadows dpr={[2, 2]}>
           <Stage {...gltf} />
-          <ActiveParticipant onMove={sendCoordinates} octree={octree} />
+          {/* handle particpants here */}
+          <ActiveParticipant onMove={onMove} octree={octree} />
         </Canvas>
-        <HUD />
+        <HUD {...participants} />
       </>
     )
 }

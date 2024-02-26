@@ -4,25 +4,45 @@ import './styles.css'
 import Landing from './views/Landing';
 import Meeting from './views/Meeting';
 import Spinner from './components/Spinner';
+import getRandom from './helpers/getRandom';
+import setQueryParam from './helpers/setQueryParam';
+import * as p2p from './p2p';
 
-let peer;
-let conn;
+const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and microphone access.'
 
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
+  const [stream, setStream] = useState(null);
 
   const startMeeting = () => {
-    setInMeeting(true);
+    if (stream) {
+      const meetingCode = getRandom(1000, 9999);
+      setQueryParam({'meeting-code': meetingCode})
+      p2p.create(meetingCode, stream);
+      setInMeeting(true);
+    } else {
+      alert(PERMISSIONS_MSG);
+    }
   }
 
-  const joinMeeting = (meetingId) => {
-    setInMeeting(true);
+  const joinMeeting = (meetingCode) => {
+    if (stream) {
+      p2p.join(meetingCode, stream)
+      setInMeeting(true);
+    } else {
+      alert(PERMISSIONS_MSG);
+    }
+  }
+
+  const handleMove = (coordinates) => {
+    // TODO
+    // console.log(coordinates)
   }
 
   if (inMeeting) {
-    return <Meeting />
+    return <Meeting onMove={handleMove} participants={[]} />
   } else {
-    return <Landing onStart={startMeeting} onJoin={joinMeeting} />
+    return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }
 }
 
