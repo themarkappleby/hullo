@@ -2,11 +2,11 @@
 import Button from '../../../components/Button';
 import styles from './styles';
 
-const HUD = () => {
+const HUD = ({ participants = [] }) => {
     const meetingCode = '1234'
     return (
         <div css={styles.hud}>
-            1 participant
+            {participants.length} participant{participants.length === 1 ? '' : 's'}
         </div>
     )
 }

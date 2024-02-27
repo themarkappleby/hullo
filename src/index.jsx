@@ -13,12 +13,17 @@ const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and mi
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
+  const [participants, setParticpants] = useState([]);
+
+  const onParticipantUpdate = (update) => {
+    setParticpants(update)
+  }
 
   const startMeeting = () => {
     if (stream) {
       const meetingCode = getRandom(1000, 9999);
       setQueryParam({'meeting-code': meetingCode})
-      p2p.create(meetingCode, stream);
+      p2p.create(meetingCode, stream, onParticipantUpdate);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
@@ -27,7 +32,7 @@ const App = () => {
 
   const joinMeeting = (meetingCode) => {
     if (stream) {
-      p2p.join(meetingCode, stream)
+      p2p.join(meetingCode, stream, onParticipantUpdate);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
@@ -40,7 +45,7 @@ const App = () => {
   }
 
   if (inMeeting) {
-    return <Meeting onMove={handleMove} participants={[]} />
+    return <Meeting onMove={handleMove} participants={participants} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }
