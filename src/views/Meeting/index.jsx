@@ -9,7 +9,7 @@ import HUD from './HUD';
 import styles from './styles';
 
 const Meeting = ({ onMove, participants }) => {
-    const videoRef = useRef();
+    const videosRef = useRef();
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
     return (
@@ -19,7 +19,13 @@ const Meeting = ({ onMove, participants }) => {
           {/* handle particpants here */}
           <ActiveParticipant onMove={onMove} octree={octree} />
         </Canvas>
-        <video css={styles.video} ref={videoRef} />
+        <div css={styles.videos} ref={videosRef}>
+          {participants.map(p => {
+            return (
+              <video />
+            )
+          })}
+        </div>
         <HUD participants={participants} />
       </>
     )

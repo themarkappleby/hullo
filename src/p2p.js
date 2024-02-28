@@ -6,10 +6,21 @@ const NAMESPACE = 'hullo'
 const participants = [{
     id: 'hullo-1234',
     stream: {},
+    connection: {
+        send: () => {},
+    },
     self: true,
     position: [0, 0.75, 0],
     rotation: [0, 0, 0],
 }];
+
+const broadcast = (data) => {
+    participants.forEach(participant => {
+        if (!participant.self) {
+            participant.connection.send(data);
+        }
+    })
+}
 
 export const create = (id, stream, onParticpantUpdate) => {
     const peer = new Peer(`${NAMESPACE}-${id}`);
@@ -25,6 +36,7 @@ export const create = (id, stream, onParticpantUpdate) => {
         });
     })
     peer.on('error', error => console.error(error));
+    return broadcast;
 }
 
 export const join = (id, stream, onParticpantUpdate) => {
@@ -39,4 +51,5 @@ export const join = (id, stream, onParticpantUpdate) => {
         });
     })
     peer.on('error', error => console.error(error));
+    return broadcast;
 }
