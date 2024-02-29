@@ -7,6 +7,9 @@ import Spinner from './components/Spinner';
 import getRandom from './helpers/getRandom';
 import setQueryParam from './helpers/setQueryParam';
 import * as p2p from './p2p';
+import test from './peer';
+
+test();
 
 const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and microphone access.'
 let broadcast = () => {};

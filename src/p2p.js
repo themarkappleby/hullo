@@ -22,26 +22,41 @@ const broadcast = (data) => {
     })
 }
 
-export const create = (id, stream, onParticpantUpdate) => {
-    const peer = new Peer(`${NAMESPACE}-${id}`);
-    peer.on('open', () => {
+const getParticpant = (id) => {
+    return participants.filter(participant => participant.id === id).pop();
+}
+
+const addParticipant = (participant) => {
+
+}
+
+const initPeer = id => {
+    return new Promise((resolve) => {
+        const peer = new Peer(`${NAMESPACE}-${id || getRandom(1000, 9999)}`);
+        peer.on('open', () => resolve(peer));
+        // Listen for incoming data
         peer.on('connection', conn => {
             conn.on('data', data => {
             });
         });
+        // Answer incoming calls
         peer.on('call', call => {
             call.answer(stream)
             call.on('stream', s => {
             });
         });
+        peer.on('error', error => console.error(error));
+    });
+}
+
+export const create = (id, stream, onParticpantUpdate) => {
+    initPeer(id).then(peer => {
     })
-    peer.on('error', error => console.error(error));
     return broadcast;
 }
 
 export const join = (id, stream, onParticpantUpdate) => {
-    const peer = new Peer(`${NAMESPACE}-${getRandom(1000, 9999)}`);
-    peer.on('open', () => {
+    initPeer().then(peer => {
         const conn = peer.connect(`${NAMESPACE}-${id}`);
         conn.on('open', () => {
             conn.send('hi!');
@@ -49,7 +64,7 @@ export const join = (id, stream, onParticpantUpdate) => {
         const call = peer.call(`${NAMESPACE}-${id}`, stream)
         call.on('stream', s => {
         });
+        peer.on('error', error => console.error(error));
+        return broadcast;
     })
-    peer.on('error', error => console.error(error));
-    return broadcast;
 }
