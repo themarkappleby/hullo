@@ -7,12 +7,12 @@ import Spinner from './components/Spinner';
 import getRandom from './helpers/getRandom';
 import setQueryParam from './helpers/setQueryParam';
 import * as p2p from './p2p';
-import test from './peer';
-
-test();
+import debugPeer from './peer';
 
 const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and microphone access.'
 let broadcast = () => {};
+
+debugPeer();
 
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
@@ -59,7 +59,7 @@ const App = () => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Suspense fallback={<Spinner />}>
-      <App />
+      {/* <App /> */}
     </Suspense>
   </StrictMode>
 )

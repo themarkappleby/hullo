@@ -12,6 +12,19 @@ class Participant {
         this.id = `${NAMESPACE}-${getRandom(1000, 9999)}`;
     }
 
+    d() {
+        // Debug method
+        return `${this.id}: ${this.connections.map(c => c.peer).join(', ')}`;
+    }
+
+    saveConnection(connection) {
+        // Only add connection if it is new
+        const existingConnection = this.connections.find(c => c.peer === connection.peer);
+        if (!existingConnection) {
+            this.connections.push(connection);
+        }
+    }
+
     initPeer() {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id);
@@ -19,7 +32,7 @@ class Participant {
             // Handle someone connecting to you
             this.peer.on('connection', connection => {
                 // connection.on('open', this.answerConnection.bind(this, connection));
-                this.connections.push(connection)
+                this.saveConnection(connection)
                 const knownIds = `c${this.connections.map(conn => conn.peer.replace('hullo-', '')).join(',')}`
                 connection.on('open', () => {
                     connection.send(knownIds)
@@ -29,15 +42,23 @@ class Participant {
     }
 
     connect(id) {
+        if (typeof id === 'object' && id.id) {
+            id = id.id
+        }
         return new Promise((resolve) => {
+            const connections = this.connections;
             const connection = this.peer.connect(id);
             connection.on('open', () => {
+                this.saveConnection(connection);
                 resolve();
                 connection.on('data', data => {
-                    // TODO connect to all unknown ids
-                    console.log('------------------------')
-                    console.log(`${this.id} recieved data: ${data}`)
-                    console.log('------------------------')
+                    const dataType = data[0]
+                    data = data.substring(1);
+                    if (dataType === 'c') {
+                        let ids = data.split(',').map(id => `${NAMESPACE}-${id}`).filter(id => id !== this.id);
+                        ids = ids.filter(id => !connections.some(conn => conn.peer === id))
+                        ids.forEach(this.connect.bind(this));
+                    }
                 });
             })
         });
@@ -58,15 +79,19 @@ class Participant {
 }
 
 export default () => {
-    const p1 = new Participant()
-    const p2 = new Participant();
-    const p3 = new Participant();
-    Promise.all([p1.initPeer(), p2.initPeer(), p3.initPeer()]).then(() => {
-        console.log(p1.id, p1.connections.map(conn => conn.peer.replace('hullo-', '')).join(','));
-        console.log(p2.id, p2.connections.map(conn => conn.peer.replace('hullo-', '')).join(','));
-        console.log(p3.id, p3.connections.map(conn => conn.peer.replace('hullo-', '')).join(','));
-        p2.connect(p1.id).then(() => {
-            p3.connect(p1.id)
+    const participants = [];
+    for (let i=1; i<=5; i++) {
+        const participant = new Participant();
+        window[`p${i}`] = participant;
+        participants.push(participant)
+    }
+    const promises = []
+    participants.forEach(participant => {
+        promises.push(participant.initPeer())
+    })
+    Promise.all(promises).then(() => {
+        participants.forEach(participant => {
+            console.log(participant)
         })
     })
 }
