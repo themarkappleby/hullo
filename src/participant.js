@@ -6,10 +6,13 @@ const NAMESPACE = 'hullo'
 class Participant {
     id;
     peer;
+    stream;
+    events = [];
     connections = [];
 
-    constructor() {
+    constructor(stream) {
         this.id = `${NAMESPACE}-${getRandom(1000, 9999)}`;
+        this.stream = stream;
     }
 
     d() {
@@ -51,7 +54,19 @@ class Participant {
                     connection.send(knownIds)
                 })
             });
+            this.peer.on('call', call => {
+                call.answer(this.stream);
+                call.on('stream', s => {
+                    this.events.forEach(({event, cb}) => {
+                        if (event === 'stream') cb(s)
+                    })
+                });
+            })
         });
+    }
+
+    on(event, cb) {
+        this.events.push({ event, cb })
     }
 
     connect(id) {
@@ -61,6 +76,12 @@ class Participant {
         return new Promise((resolve) => {
             const connections = this.connections;
             const connection = this.peer.connect(id);
+            const call = this.peer.call(id, this.stream);
+            call.on('stream', s => {
+                this.events.forEach(({event, cb}) => {
+                    if (event === 'stream') cb(s)
+                })
+            });
             connection.on('open', () => {
                 this.saveConnection(connection);
                 resolve();
@@ -69,7 +90,9 @@ class Participant {
     }
 }
 
-export default () => {
+export default Participant;
+
+export const test = () => {
     const participants = [];
     for (let i=1; i<=5; i++) {
         const participant = new Participant();

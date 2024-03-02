@@ -1,4 +1,4 @@
-import { StrictMode, Suspense, useState, useEffect } from 'react'
+import { StrictMode, Suspense, useState, useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 import Landing from './views/Landing';
@@ -7,34 +7,41 @@ import Spinner from './components/Spinner';
 import getRandom from './helpers/getRandom';
 import setQueryParam from './helpers/setQueryParam';
 import * as p2p from './p2p';
-import debugPeer from './peer';
+import Participant from './participant';
 
 const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and microphone access.'
-let broadcast = () => {};
-
-debugPeer();
 
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
   const [participants, setParticpants] = useState([]);
+  const videosRef = useRef();
 
-  const recieveUpdate = update => {
-    setParticpants(update)
-  }
-
-  const sendUpdate = coordinates => {
-    broadcast(coordinates);
+  const handleMove = coordinates => {
     // TODO
     // console.log(coordinates)
   }
 
+  const addStream = stream => {
+    const videos = videosRef.current;
+    const video = document.createElement('video');
+    video.srcObject = stream;
+    videos.appendChild(video);
+    const isPlaying = video.currentTime > 0 && !video.paused && !video.ended && video.readyState > video.HAVE_CURRENT_DATA;
+    if (!isPlaying) {
+      video.play().catch(e => console.log(e));
+    }
+  }
+
   const startMeeting = () => {
     if (stream) {
-      const meetingCode = getRandom(1000, 9999);
-      setQueryParam({'meeting-code': meetingCode})
-      broadcast = p2p.create(meetingCode, stream, recieveUpdate);
-      setInMeeting(true);
+      const participant = new Participant(stream);
+      participant.initPeer().then(() => {
+        console.log(participant.id.replace('hullo-', ''))
+        // setQueryParam({'meeting-code': participant.id.replace('hullo-', '')})
+      })
+      participant.on('stream', addStream);
+      // setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
     }
@@ -42,24 +49,33 @@ const App = () => {
 
   const joinMeeting = (meetingCode) => {
     if (stream) {
-      broadcast = p2p.join(meetingCode, stream, recieveUpdate);
-      setInMeeting(true);
+      const participant = new Participant(stream);
+      participant.initPeer().then(() => {
+        participant.connect(`hullo-${meetingCode}`)
+      });
+      participant.on('stream', addStream);
+      // setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
     }
   }
 
   if (inMeeting) {
-    return <Meeting onMove={sendUpdate} participants={participants} />
+    return <Meeting onMove={handleMove} participants={participants} />
   } else {
-    return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
+    return (
+      <>
+        <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
+        <div ref={videosRef} className="videos" />
+      </>
+    )
   }
 }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Suspense fallback={<Spinner />}>
-      {/* <App /> */}
+      <App />
     </Suspense>
   </StrictMode>
 )
