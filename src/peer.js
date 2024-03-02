@@ -13,25 +13,38 @@ class Participant {
     }
 
     d() {
-        // Debug method
         return `${this.id}: ${this.connections.map(c => c.peer).join(', ')}`;
     }
 
     saveConnection(connection) {
-        // Only add connection if it is new
         const existingConnection = this.connections.find(c => c.peer === connection.peer);
         if (!existingConnection) {
             this.connections.push(connection);
+            connection.on('data', data => {
+                const dataType = data[0]
+                data = data.substring(1);
+                if (dataType === 'c') {
+                    let ids = data.split(',').map(id => `${NAMESPACE}-${id}`).filter(id => id !== this.id);
+                    ids = ids.filter(id => !this.connections.some(conn => conn.peer === id))
+                    ids.forEach(this.connect.bind(this));
+                } else if (dataType === 'm') {
+                    console.log(`${this.id} message - ${data}`)
+                }
+            });
         }
+    }
+
+    broadcast() {
+        this.connections.forEach(connection => {
+            connection.send('mHello world')
+        })
     }
 
     initPeer() {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id);
             this.peer.on('open', resolve);
-            // Handle someone connecting to you
             this.peer.on('connection', connection => {
-                // connection.on('open', this.answerConnection.bind(this, connection));
                 this.saveConnection(connection)
                 const knownIds = `c${this.connections.map(conn => conn.peer.replace('hullo-', '')).join(',')}`
                 connection.on('open', () => {
@@ -51,31 +64,9 @@ class Participant {
             connection.on('open', () => {
                 this.saveConnection(connection);
                 resolve();
-                connection.on('data', data => {
-                    const dataType = data[0]
-                    data = data.substring(1);
-                    if (dataType === 'c') {
-                        let ids = data.split(',').map(id => `${NAMESPACE}-${id}`).filter(id => id !== this.id);
-                        ids = ids.filter(id => !connections.some(conn => conn.peer === id))
-                        ids.forEach(this.connect.bind(this));
-                    }
-                });
             })
         });
-        // Handle you connecting to someone
-        // connection.on('open', this.answerConnection.bind(this, connection));
     }
-
-    // answerConnection(connection) {
-    //     this.connections.push(connection)
-    //     const knownIds = `c${this.connections.map(conn => conn.peer.replace('hullo-', '')).join(',')}`
-    //     connection.send(knownIds)
-    //     connection.on('data', data => {
-    //         console.log('------------------------')
-    //         console.log(`${this.id} incoming`, data)
-    //         console.log('------------------------')
-    //     });
-    // }
 }
 
 export default () => {
