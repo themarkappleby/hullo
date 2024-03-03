@@ -58,7 +58,7 @@ class Participant {
                 call.answer(this.stream);
                 call.on('stream', s => {
                     this.events.forEach(({event, cb}) => {
-                        if (event === 'stream') cb(s)
+                        if (event === 'stream') cb({stream: s, id: call.peer})
                     })
                 });
             })
@@ -79,7 +79,7 @@ class Participant {
             const call = this.peer.call(id, this.stream);
             call.on('stream', s => {
                 this.events.forEach(({event, cb}) => {
-                    if (event === 'stream') cb(s)
+                    if (event === 'stream') cb({stream: s, id: call.peer})
                 })
             });
             connection.on('open', () => {

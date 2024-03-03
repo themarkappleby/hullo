@@ -4,7 +4,7 @@ import styles from './styles'
 import Button from '../../components/Button';
 
 const urlParams = new URLSearchParams(window.location.search);
-const meetingCodeParam = urlParams.get('meeting-code');
+const meetingCodeParam = urlParams.get('id');
 
 const Landing = ({onStart, onJoin, onStream}) => {
     const [enteringCode, setEnteringCode] = useState(!!meetingCodeParam);

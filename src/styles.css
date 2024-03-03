@@ -8,12 +8,30 @@ html, body, #root {
   position: absolute;
   top: 0;
   right: 0;
-  max-width: 200px;
-  min-height: 100px;
+  width: 200px;
   background: grey;
+}
+
+.videos > div {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   video {
-    width: 100%;
     background: black;
-    aspect-ratio: 16 / 9;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
+}
+
+.videoId {
+  background: #3262d6;
+  color: white;
+  font-size: 10px;
+  padding: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
 }
