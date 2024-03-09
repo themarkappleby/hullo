@@ -24,6 +24,7 @@ const App = () => {
     // console.log(coordinates)
   }
 
+  // TODO move stream and video stuff into Meeting
   const addStream = s => {
     setStreams(prevStreams => {
       let newStreams = [...prevStreams, s];
