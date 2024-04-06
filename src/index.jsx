@@ -76,7 +76,7 @@ const App = () => {
   if (inMeeting) {
     return (
       <>
-        <Meeting onMove={handleMove} participants={participants} />
+        <Meeting onMove={handleMove} participants={participants} streams={streams} />
         <div ref={videosRef} className="videos">
           {streams.map(s => {
             return (
