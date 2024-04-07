@@ -13,9 +13,18 @@ const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
   const [streams, setStreams] = useState([]);
+  const [participants, setParticipants] = useState([]);
   window.s = streams;
 
   const addStream = s => {
+    setParticipants(prevParticipants => {
+      let newParticipants = [...prevParticipants, s];
+      const uniqueIds = Array.from(new Set(newParticipants.map(obj => obj.id)));
+      newParticipants = uniqueIds.map(id => newParticipants.find(obj => obj.id === id));
+      return newParticipants;
+    })
+
+    // TODO refactor this as it seems redundant given setParticipants above
     setStreams(prevStreams => {
       let newStreams = [...prevStreams, s];
       const uniqueIds = Array.from(new Set(newStreams.map(obj => obj.id)));
@@ -27,6 +36,9 @@ const App = () => {
   const startMeeting = () => {
     if (stream) {
       const participant = new Participant(stream);
+      participant.isLocal = true;
+      participant.stream = stream;
+      setParticipants([...participants, participant]);
       participant.initPeer().then(() => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       })
@@ -40,6 +52,9 @@ const App = () => {
   const joinMeeting = (meetingCode) => {
     if (stream) {
       const participant = new Participant(stream);
+      participant.isLocal = true;
+      participant.stream = stream;
+      setParticipants([...participants, participant]);
       participant.initPeer().then(() => {
         participant.connect(`hullo-${meetingCode}`)
         setQueryParam({'id': participant.id.replace('hullo-', '')})
@@ -52,7 +67,7 @@ const App = () => {
   }
 
   if (inMeeting) {
-    return <Meeting streams={streams} />
+    return <Meeting participants={participants} streams={streams} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }

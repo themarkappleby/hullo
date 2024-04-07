@@ -8,7 +8,7 @@ import { PointerLockControls } from '@react-three/drei'
 const GRAVITY = 30;
 const FRAME_STEPS = 5;
 
-export default function ActiveParticipant({ octree, onMove }) {
+export default function LocalParticipant({ octree, onMove }) {
   const playerOnFloor = useRef(true)
   const playerVelocity = useMemo(() => new Vector3(), [])
   const playerDirection = useMemo(() => new Vector3(), [])

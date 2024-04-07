@@ -3,11 +3,11 @@ import { Canvas } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import useOctree from './useOctree'
 import Stage from './Stage'
-import ActiveParticipant from './ActiveParticipant'
+import LocalParticipant from './LocalParticipant'
 import HUD from './HUD';
 import Videos from './Videos';
 
-const OtherParticipant = () => {
+const RemoteParticipant = () => {
   return (
     <>
       <mesh position={otherCoordinates.position} rotation={otherCoordinates.rotation} >
@@ -39,20 +39,21 @@ const OtherParticipant = () => {
   TODO
   1. Refactor parent component (../index.jsx) to store participants (and put the streams on the relevant participant).
   1. Pass participants into Meeting rather than streams. Revise Video and HUD accordingly.
-  1. Broadcast onMove coordinates from ActiveParticipant
-  1. For each participant that is not the ActiveParticipant, render the OtherParticipant component.
+  1. Broadcast onMove coordinates from LocalParticipant
+  1. For each participant that is not the LocalParticipant, render the RemoteParticipant component.
 */
 
-const Meeting = ({ streams  }) => {
+const Meeting = ({ participants, streams  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
+    console.log({participants})
     return (
       <>
-        <Canvas shadows dpr={[2, 2]}>
+        {/* <Canvas shadows dpr={[2, 2]}>
           <Stage {...gltf} />
-          {/* <OtherParticipant /> */}
-          <ActiveParticipant onMove={(coordinates) => console.log(coordinates)} octree={octree} />
-        </Canvas>
+          <RemoteParticipant />
+          <LocalParticipant onMove={(coordinates) => console.log(coordinates)} octree={octree} />
+        </Canvas> */}
         <Videos streams={streams} />
         <HUD participants={streams.length + 1} />
       </>
