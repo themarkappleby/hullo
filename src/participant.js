@@ -46,6 +46,10 @@ class Participant {
     initPeer() {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id);
+            this.peer.on('error', error => {
+                console.error(error)
+                location.reload();
+            });
             this.peer.on('open', resolve);
             this.peer.on('connection', connection => {
                 this.saveConnection(connection)

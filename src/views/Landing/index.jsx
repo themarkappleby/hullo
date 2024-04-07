@@ -18,7 +18,9 @@ const Landing = ({onStart, onJoin, onStream}) => {
             .then((stream) => {
                 onStream(stream);
                 videoRef.current.srcObject = stream;
-                videoRef.current.play();
+                if (videoRef.current.paused) {
+                    videoRef.current.play();
+                }
             })
             .catch((err) => {
                 console.error(err)
