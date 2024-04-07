@@ -48,7 +48,9 @@ class Participant {
             this.peer = new Peer(this.id);
             this.peer.on('error', error => {
                 console.error(error)
-                location.reload();
+                if (window.confirm('A connection error occurred. Please try again.')) {
+                    location.reload();
+                }
             });
             this.peer.on('open', resolve);
             this.peer.on('connection', connection => {

@@ -7,6 +7,7 @@ import Peer from 'peerjs';
 import Player from './views/Meeting/Player'
 import Stage from './views/Meeting/Stage'
 import Landing from './views/Landing';
+import playVideo from './helpers/playVideo'
 
 const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -37,16 +38,13 @@ export default function App() {
   const updateVideo = stream => {
     const video = videoRef.current;
     video.srcObject = stream;
-    const isPlaying = video.currentTime > 0 && !video.paused && !video.ended && video.readyState > video.HAVE_CURRENT_DATA;
-    if (!isPlaying) {
-      video.play().catch(e => console.log(e));
-    }
+    playVideo(video);
   }
 
   useEffect(() => {
     getUserMedia({video: { width: 1920, height: 1080 }, audio: true}, newStream => {
       videoRef.current.srcObject = newStream;
-      videoRef.current.play();
+      playVideo(videoRef.current);
     });
 
     if (!peer) {

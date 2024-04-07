@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import styles from './styles'
 import Button from '../../components/Button';
+import playVideo from '../../helpers/playVideo';
 
 const urlParams = new URLSearchParams(window.location.search);
 const meetingCodeParam = urlParams.get('id');
@@ -18,9 +19,7 @@ const Landing = ({onStart, onJoin, onStream}) => {
             .then((stream) => {
                 onStream(stream);
                 videoRef.current.srcObject = stream;
-                if (videoRef.current.paused) {
-                    videoRef.current.play();
-                }
+                playVideo(videoRef.current);
             })
             .catch((err) => {
                 console.error(err)

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useRef } from 'react';
 import styles from './styles';
+import playVideo from '../../../helpers/playVideo';
 
 const Videos = ({streams = []}) => {
     const videosRef = useRef();
@@ -10,10 +11,7 @@ const Videos = ({streams = []}) => {
         streams.forEach(s => {
             const video = videos.querySelector(`#${s.id} video`)
             video.srcObject = s.stream;
-            const isPlaying = video.currentTime > 0 && !video.paused && !video.ended && video.readyState > video.HAVE_CURRENT_DATA;
-            if (!isPlaying) {
-                video.play().catch(e => console.log(e));
-            }
+            playVideo(video);
         })
     }, [streams])
 
