@@ -13,7 +13,6 @@ const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
   const [streams, setStreams] = useState([]);
-  const [participants, setParticpants] = useState([]);
   window.s = streams;
 
   const addStream = s => {
@@ -53,7 +52,7 @@ const App = () => {
   }
 
   if (inMeeting) {
-    return <Meeting participants={participants} streams={streams} />
+    return <Meeting streams={streams} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }

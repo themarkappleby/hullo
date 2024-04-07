@@ -7,7 +7,7 @@ import ActiveParticipant from './ActiveParticipant'
 import HUD from './HUD';
 import Videos from './Videos';
 
-const Meeting = ({ participants, streams  }) => {
+const Meeting = ({ streams  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
     return (
@@ -17,7 +17,7 @@ const Meeting = ({ participants, streams  }) => {
           <ActiveParticipant onMove={(coordinates) => console.log(coordinates)} octree={octree} />
         </Canvas> */}
         <Videos streams={streams} />
-        <HUD participants={participants} />
+        <HUD participants={streams.length + 1} />
       </>
     )
 }
