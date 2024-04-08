@@ -46,7 +46,7 @@ const RemoteParticipant = () => {
 const Meeting = ({ participants  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
-    const activeParticipant = participants.filter(p => p.isLocal)[0]
+    const localParticipant = participants.filter(p => p.isLocal)[0]
     const remoteParticipants = participants.filter(p => !p.isLocal)
     return (
       <>
