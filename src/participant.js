@@ -2,6 +2,8 @@ import Peer from 'peerjs';
 import getRandom from './helpers/getRandom';
 
 const NAMESPACE = 'hullo'
+const CONNECTION_DATA_FLAG = 'c';
+const MOVE_DATA_FLAG = 'm';
 
 class Participant {
     id;
@@ -26,20 +28,22 @@ class Participant {
             connection.on('data', data => {
                 const dataType = data[0]
                 data = data.substring(1);
-                if (dataType === 'c') {
+                if (dataType === CONNECTION_DATA_FLAG) {
                     let ids = data.split(',').map(id => `${NAMESPACE}-${id}`).filter(id => id !== this.id);
                     ids = ids.filter(id => !this.connections.some(conn => conn.peer === id))
                     ids.forEach(this.connect.bind(this));
-                } else if (dataType === 'm') {
-                    console.log(`${this.id} message - ${data}`)
+                } else if (dataType === MOVE_DATA_FLAG) {
+                    this.events.forEach(({event, cb}) => {
+                        if (event === 'recieve_location_data') cb(data)
+                    })
                 }
             });
         }
     }
 
-    broadcast() {
+    broadcast(message) {
         this.connections.forEach(connection => {
-            connection.send('mHello world')
+            connection.send(message)
         })
     }
 

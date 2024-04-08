@@ -16,11 +16,27 @@ const App = () => {
 
   const addParticipant = s => {
     setParticipants(prevParticipants => {
-      let newParticipants = [...prevParticipants, s];
+      let newParticipants = [...prevParticipants, {...s, position: [0,0,0], rotation: [0,0,0]}];
       const uniqueIds = Array.from(new Set(newParticipants.map(obj => obj.id)));
       newParticipants = uniqueIds.map(id => newParticipants.find(obj => obj.id === id));
       return newParticipants;
     })
+  }
+
+  const handleIncomingLocationData = data => {
+    const parts = data.split(',')
+    const remoteId = parts[0];
+    const position = [parts[1], parts[2], parts[3]];
+    const rotation = [parts[4], parts[5], parts[6]];
+    setParticipants(prevParticipants => {
+      return prevParticipants.map(participant => {
+        if (participant.id === remoteId) {
+          participant.position = position;
+          participant.rotation = rotation;
+        }
+        return participant;
+      });
+    });
   }
 
   const startMeeting = () => {
@@ -33,6 +49,7 @@ const App = () => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       })
       participant.on('stream', addParticipant);
+      participant.on('recieve_location_data', handleIncomingLocationData);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
@@ -50,6 +67,7 @@ const App = () => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       });
       participant.on('stream', addParticipant);
+      participant.on('recieve_location_data', handleIncomingLocationData);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);

@@ -47,7 +47,9 @@ const Landing = ({onStart, onJoin, onStream}) => {
                 </div>
             </div>
             <main css={styles.main}>
-                <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
+                <a href="/">
+                    <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
+                </a>
                 <h1>Spacial video conferencing</h1>
                 <h2>In-office style collaboration for distributed teams</h2>
                 <div css={styles.buttonGroup}>
