@@ -37,25 +37,26 @@ const RemoteParticipant = () => {
 
 /*
   TODO
-  1. Refactor parent component (../index.jsx) to store participants (and put the streams on the relevant participant).
-  1. Pass participants into Meeting rather than streams. Revise Video and HUD accordingly.
+  1. DONE Refactor parent component (../index.jsx) to store participants (and put the streams on the relevant participant).
+  1. DONE Pass participants into Meeting rather than streams. Revise Video and HUD accordingly.
   1. Broadcast onMove coordinates from LocalParticipant
   1. For each participant that is not the LocalParticipant, render the RemoteParticipant component.
 */
 
-const Meeting = ({ participants, streams  }) => {
+const Meeting = ({ participants  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
-    console.log({participants})
+    const activeParticipant = participants.filter(p => p.isLocal)[0]
+    const remoteParticipants = participants.filter(p => !p.isLocal)
     return (
       <>
-        {/* <Canvas shadows dpr={[2, 2]}>
+        <Canvas shadows dpr={[2, 2]}>
           <Stage {...gltf} />
-          <RemoteParticipant />
+          {/* <RemoteParticipant /> */}
           <LocalParticipant onMove={(coordinates) => console.log(coordinates)} octree={octree} />
-        </Canvas> */}
-        <Videos streams={streams} />
-        <HUD participants={streams.length + 1} />
+        </Canvas>
+        <Videos streams={remoteParticipants} />
+        <HUD participants={remoteParticipants.length + 1} />
       </>
     )
 }

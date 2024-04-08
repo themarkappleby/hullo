@@ -12,25 +12,15 @@ const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and mi
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
-  const [streams, setStreams] = useState([]);
   const [participants, setParticipants] = useState([]);
-  window.s = streams;
 
-  const addStream = s => {
+  const addParticipant = s => {
     setParticipants(prevParticipants => {
       let newParticipants = [...prevParticipants, s];
       const uniqueIds = Array.from(new Set(newParticipants.map(obj => obj.id)));
       newParticipants = uniqueIds.map(id => newParticipants.find(obj => obj.id === id));
       return newParticipants;
     })
-
-    // TODO refactor this as it seems redundant given setParticipants above
-    setStreams(prevStreams => {
-      let newStreams = [...prevStreams, s];
-      const uniqueIds = Array.from(new Set(newStreams.map(obj => obj.id)));
-      newStreams = uniqueIds.map(id => newStreams.find(obj => obj.id === id));
-      return newStreams;
-    });
   }
 
   const startMeeting = () => {
@@ -42,7 +32,7 @@ const App = () => {
       participant.initPeer().then(() => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       })
-      participant.on('stream', addStream);
+      participant.on('stream', addParticipant);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
@@ -59,7 +49,7 @@ const App = () => {
         participant.connect(`hullo-${meetingCode}`)
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       });
-      participant.on('stream', addStream);
+      participant.on('stream', addParticipant);
       setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
@@ -67,7 +57,7 @@ const App = () => {
   }
 
   if (inMeeting) {
-    return <Meeting participants={participants} streams={streams} />
+    return <Meeting participants={participants} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }
