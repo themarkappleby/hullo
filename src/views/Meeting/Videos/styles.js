@@ -7,6 +7,7 @@ const styles = {
         right: 0;
         width: 200px;
         background: grey;
+        display: none;
         & > div {
             position: relative;
             width: 100%;

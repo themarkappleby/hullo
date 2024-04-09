@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import styles from './styles';
 import playVideo from '../../../helpers/playVideo';
 
-const Videos = ({streams = []}) => {
+const Videos = memo(function ({streams = []}) {
     const videosRef = useRef();
 
     useEffect(() => {
@@ -27,6 +27,10 @@ const Videos = ({streams = []}) => {
           })}
         </div>
     )
-}
+}, function (prevProps, nextProps) {
+  const prevStreamIds = prevProps?.streams?.map(s => s.id)?.toString();
+  const nextStreamIds = nextProps?.streams?.map(s => s.id)?.toString();
+  return prevStreamIds === nextStreamIds;
+});
 
 export default Videos;
