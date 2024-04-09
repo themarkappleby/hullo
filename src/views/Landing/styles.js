@@ -102,63 +102,25 @@ const styles = {
         flex-direction: row;
         gap: 12px;
     `,
-    button: css`
-        appearance: none;
-        background: ${primary};
-        border: 0;
-        font-size: 1rem;
-        color: white;
-        border-radius: 25px;
-        padding: 16px 25px;
-        cursor: pointer;
-        transition: all 0.1s ease-in-out;
-        &:hover {
-            background: ${primaryActive}
+    inputGroup: css`
+        position: relative;
+        input[type="text"] {
+            font-size: 2rem;
+            font-weight: 400;
+            height: 100%;
+            padding-left: 20px;
+            width: 230px;
+            margin: 0;
+            border-radius: 25px;
+            appearance: none;
+            border: 1px solid #c7c7c7;
         }
-        &.plain {
-            color: ${primary};
-            background: transparent;
-            &:hover {
-                color: ${primaryActive};
-                background: #f5f5f5;
-            }
-        }
-    `,
-    message: css`
-        font-size: 0.85rem;
-        color: white;
-        background: black;
-        padding: 14px 24px;
-        border-radius: 8px;
-        max-width: 190px;
-        line-height: 1.5;
-        position: absolute;
-        bottom: 30px;
-        right: 30px;
-        opacity: 0;
-        transition: all 0.5s ease-in-out;
-        display: none;
-        &.show {
-            opacity: 1;
-        }
-    `,
-    toast: css`
-        display: none;
-        background: black;
-        user-select: none;
-        color: white;
-        border-radius: 8px;
-        padding: 14px 24px;
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 1;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        transition: all 0.4s cubic-bezier(.47,1.64,.41,.8);
-        bottom: -100px;
-        &.show {
-            bottom: 30px;
+        input[type="submit"] {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
     `
 }

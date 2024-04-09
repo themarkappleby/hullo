@@ -1,14 +1,15 @@
-/** @jsxImportSource @emotion/react */
 import { useState, useRef, useEffect } from 'react';
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
-import useOctree from './useOctree'
+import useOctree from './views/Meeting/useOctree'
 import Peer from 'peerjs';
-import Player from './Player'
-import Stage from './Stage'
-import styles from './styles'
+import Player from './views/Meeting/Player'
+import Stage from './views/Meeting/Stage'
+import Landing from './views/Landing';
+import playVideo from './helpers/playVideo'
 
+const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 // const RATIO = 0.5625; // 16:9
 const RATIO = 0.75; // 4:3
@@ -16,8 +17,6 @@ const PEER_UID = 'hullo';
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const urlParams = new URLSearchParams(window.location.search);
 const hostParam = urlParams.get('host');
-
-const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 let peer;
 let conn;
@@ -34,22 +33,18 @@ export default function App() {
   const [localId, setLocalId] = useState(getRandom(1000, 9999));
   const [showToast, setShowToast] = useState(false);
   const [copied, setCopied] = useState(false);
-  const videoRef = useRef();
   const hostAddress = `${window.location.href}?host=${localId}`
 
   const updateVideo = stream => {
     const video = videoRef.current;
     video.srcObject = stream;
-    const isPlaying = video.currentTime > 0 && !video.paused && !video.ended && video.readyState > video.HAVE_CURRENT_DATA;
-    if (!isPlaying) {
-      video.play().catch(e => console.log(e));
-    }
+    playVideo(video);
   }
 
   useEffect(() => {
     getUserMedia({video: { width: 1920, height: 1080 }, audio: true}, newStream => {
       videoRef.current.srcObject = newStream;
-      videoRef.current.play();
+      playVideo(videoRef.current);
     });
 
     if (!peer) {
@@ -140,41 +135,7 @@ export default function App() {
           <Player onMove={sendCoordinates} octree={octree} />
         </Canvas>
       ) : (
-        <div css={styles.landing}>
-
-          <div css={styles.preview}>
-            <div css={styles.videoWrapper}>
-              <video css={styles.video} ref={videoRef} />
-              <p>Please allow camera and microphone access</p>
-            </div>
-            <div css={styles.notice}>
-              👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera
-            </div>
-          </div>
-
-          <main css={styles.main}>
-            <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
-            <h1>Spacial video conferencing</h1>
-            <h2>In-office style collaboration for distributed teams</h2>
-            <div css={styles.buttonGroup}>
-              <button css={styles.button} onClick={() => copy(hostAddress)}>Start meeting</button>
-              <button css={styles.button} className="plain">Enter meeting code</button>
-            </div>
-          </main>
-
-          {connecting ? (
-            <h1 style={{padding: '50px'}}>Connecting...</h1>
-          ) : (
-            <>
-              <div css={styles.message} className={copied ? 'show' : ''}>
-                The invite link has been copied to your clipboard. Share it with a friend to start a call.
-              </div>
-              <div css={styles.toast} className={showToast ? 'show' : ''}>
-                Copied!
-              </div>
-            </>
-          )}
-        </div>
+        <Landing />
       )}
     </>
   )
