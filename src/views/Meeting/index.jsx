@@ -10,6 +10,8 @@ import calculateDistances from '../../helpers/calculateDistances';
 import HUD from './HUD';
 import Videos from './Videos';
 
+const MAX_VOLUME_DISTANCE = 15;
+
 const Meeting = ({ participants, setParticipants  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
     const octree = useOctree(gltf.scene)
@@ -23,8 +25,10 @@ const Meeting = ({ participants, setParticipants  }) => {
 
     useEffect(() => {
       const distances = calculateDistances(localParticipant, remoteParticipants)
-      // TODO adjust remote video volumes based on calculated distances
-      // distances = [{ id: 'hullo-3857', distance: 0.352222521 }, { id: 'hullo-1232', distance: 2.35848298 }, ...]
+      distances.forEach(d => {
+        const video = getParticipantVideo(d.id);
+        video.volume = Math.min(Math.max((MAX_VOLUME_DISTANCE - d.distance) / 10, 0), 1);
+      })
     }, [participants])
 
     const handleMove = (coordinates) => {

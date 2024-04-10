@@ -39,7 +39,7 @@ const Landing = ({onStart, onJoin, onStream}) => {
         <div css={styles.landing}>
             <div css={styles.preview}>
                 <div css={styles.videoWrapper}>
-                    <video css={styles.video} ref={videoRef} />
+                    <video css={styles.video} ref={videoRef} muted />
                     <p>Please allow camera and microphone access</p>
                 </div>
                 <div css={styles.notice}>
