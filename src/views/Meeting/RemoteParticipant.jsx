@@ -23,11 +23,11 @@ const RemoteParticipant = ({position, rotation, video}) => {
       <mesh
         position={[
           position[0],
-          position[1] - 0.95,
+          position[1] - 0.9,
           position[2]
         ]}
       >
-        <capsuleGeometry args={[0.3, 0.6, 10, 16]} />
+        <capsuleGeometry args={[0.25, 0.6, 10, 16]} />
         <meshStandardMaterial color='black' />
       </mesh>
     </>
