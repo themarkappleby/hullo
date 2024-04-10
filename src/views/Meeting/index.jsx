@@ -10,7 +10,8 @@ import calculateDistances from '../../helpers/calculateDistances';
 import HUD from './HUD';
 import Videos from './Videos';
 
-const MAX_VOLUME_DISTANCE = 15;
+const VOLUME_DISTANCE_CUTOFF = 15;
+const MIN_VOLUME = 0.05;
 
 const Meeting = ({ participants, setParticipants  }) => {
     const gltf = useGLTF('/models/scene-transformed.glb')
@@ -27,7 +28,7 @@ const Meeting = ({ participants, setParticipants  }) => {
       const distances = calculateDistances(localParticipant, remoteParticipants)
       distances.forEach(d => {
         const video = getParticipantVideo(d.id);
-        video.volume = Math.min(Math.max((MAX_VOLUME_DISTANCE - d.distance) / 10, 0), 1);
+        video.volume = Math.min(Math.max((VOLUME_DISTANCE_CUTOFF - d.distance) / 10, MIN_VOLUME), 1);
       })
     }, [localParticipant, remoteParticipants])
 
