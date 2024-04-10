@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const RATIO = 0.75; // 4:3
+const RATIO = 0.5625; // 16:9
 
 const RemoteParticipant = ({position, rotation, video}) => {
   return (
@@ -23,11 +23,11 @@ const RemoteParticipant = ({position, rotation, video}) => {
       <mesh
         position={[
           position[0],
-          position[1] - 1.03,
+          position[1] - 0.95,
           position[2]
         ]}
       >
-        <capsuleGeometry args={[0.3, 0.5, 10, 16]} />
+        <capsuleGeometry args={[0.3, 0.6, 10, 16]} />
         <meshStandardMaterial color='black' />
       </mesh>
     </>

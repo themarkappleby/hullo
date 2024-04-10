@@ -29,17 +29,19 @@ const Meeting = ({ participants, setParticipants  }) => {
         const video = getParticipantVideo(d.id);
         video.volume = Math.min(Math.max((MAX_VOLUME_DISTANCE - d.distance) / 10, 0), 1);
       })
-    }, [participants])
+    }, [localParticipant, remoteParticipants])
 
     const handleMove = (coordinates) => {
       const message = `m${localParticipant?.id},${coordinates.position.join(',')},${coordinates.rotation.join(',')}`
-      setParticipants(participants.map(p => {
-        if (p.id ===localParticipant.id) {
-          p.position = coordinates.position;
-          p.rotation = coordinates.rotation;
-        }
-        return p;
-      }))
+      setParticipants(prevParticipants => {
+        return prevParticipants?.map(p => {
+          if (p.id ===localParticipant.id) {
+            p.position = coordinates.position;
+            p.rotation = coordinates.rotation;
+          }
+          return p;
+        })
+      })
       localParticipant.broadcast(message);
     }
 

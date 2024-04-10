@@ -24,6 +24,13 @@ const App = () => {
     })
   }
 
+  const initLocalParticipant = (participant, stream) => {
+    participant.isLocal = true;
+    participant.stream = stream;
+    participant.position = [0,0,0];
+    participant.rotation = [0,0,0];
+  }
+
   const handleIncomingLocationData = data => {
     const parts = data.split(',')
     const remoteId = parts[0];
@@ -43,8 +50,7 @@ const App = () => {
   const startMeeting = () => {
     if (stream) {
       const participant = new Participant(stream);
-      participant.isLocal = true;
-      participant.stream = stream;
+      initLocalParticipant(participant, stream);
       setParticipants([...participants, participant]);
       participant.initPeer().then(() => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
@@ -60,8 +66,7 @@ const App = () => {
   const joinMeeting = (meetingCode) => {
     if (stream) {
       const participant = new Participant(stream);
-      participant.isLocal = true;
-      participant.stream = stream;
+      initLocalParticipant(participant, stream);
       setParticipants([...participants, participant]);
       participant.initPeer().then(() => {
         participant.connect(`hullo-${meetingCode}`)
