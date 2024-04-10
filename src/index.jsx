@@ -8,6 +8,7 @@ import setQueryParam from './helpers/setQueryParam';
 import Participant from './participant';
 
 const PERMISSIONS_MSG = 'To participate in a meeting, please allow camera and microphone access.'
+const DEFAULT_POSITION = [-0.06727645665744926, 1.4985016584396327, -0.06728071925570354]
 
 const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
@@ -16,7 +17,7 @@ const App = () => {
 
   const addParticipant = s => {
     setParticipants(prevParticipants => {
-      let newParticipants = [...prevParticipants, {...s, position: [0,0,0], rotation: [0,0,0]}];
+      let newParticipants = [...prevParticipants, {...s, position: DEFAULT_POSITION, rotation: [0,0,0]}];
       const uniqueIds = Array.from(new Set(newParticipants.map(obj => obj.id)));
       newParticipants = uniqueIds.map(id => newParticipants.find(obj => obj.id === id));
       return newParticipants;
@@ -75,7 +76,7 @@ const App = () => {
   }
 
   if (inMeeting) {
-    return <Meeting participants={participants} />
+    return <Meeting participants={participants} setParticipants={setParticipants} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
   }
