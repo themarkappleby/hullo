@@ -13,6 +13,9 @@ const HUD = memo(function HUD({ participants }) {
                 <div css={styles.key}>esc</div>
                 <div>to exit</div>
             </div>
+            <div css={styles.invite}>
+                Share URL to invite others
+            </div>
             <div css={styles.prompt}>
                 Click to focus
             </div>

@@ -8,6 +8,7 @@ const styles = {
         width: 100%;
         height: 100%;
         background: rgba(0,0,0,0.7);
+        font-size: 18px;
         &.focused {
             background: transparent;
         }
@@ -17,7 +18,6 @@ const styles = {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 18px;
         color: white;
         pointer-events: none;
         .focused & {
@@ -33,7 +33,6 @@ const styles = {
         border-radius: 16px;
         display: flex;
         flex-direction: column;
-        font-size: 1rem;
         gap: 16px;
     `,
     key: css`
@@ -44,6 +43,16 @@ const styles = {
         font-family: monospace;
         text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
         box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    `,
+    invite: css`
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        color: white;
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        .focused & {
+            display: none;
+        }
     `,
     esc: css`
         position: absolute;
