@@ -53,7 +53,7 @@ class Participant {
             this.peer.on('error', error => {
                 console.error(error)
                 if (window.confirm('A connection error occurred. Please try again.')) {
-                    location.reload();
+                    window.location.href = '/';
                 }
             });
             this.peer.on('open', resolve);
