@@ -14,7 +14,7 @@ const VOLUME_DISTANCE_CUTOFF = 15;
 const MIN_VOLUME = 0.05;
 
 const Meeting = ({ participants, setParticipants  }) => {
-    const gltf = useGLTF('/models/scene-transformed.glb')
+    const gltf = useGLTF('/models/scene.glb')
     const octree = useOctree(gltf.scene)
     const videos = useRef(null);
     const localParticipant = participants.filter(p => p.isLocal)[0]

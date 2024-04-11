@@ -1,7 +1,7 @@
 import { Environment } from '@react-three/drei'
 
 export default gltf => {
-  const ref = gltf.nodes.Suzanne007
+  const ref = gltf.nodes.Plane
   return (
     <>
       <directionalLight
@@ -19,7 +19,7 @@ export default gltf => {
       />
       <Environment files="/images/rustig_koppie_puresky_1k.hdr" background />
       <group dispose={null}>
-        <mesh castShadow receiveShadow geometry={ref.geometry} material={ref.material} position={[1.74, 1.04, 24.97]} />
+        <mesh castShadow receiveShadow geometry={ref.geometry} material={ref.material} position={[0, 0, 0]} />
       </group>
     </>
   );
