@@ -82,7 +82,7 @@ class Participant {
             });
             this.peer.on('error', error => {
                 console.error(error)
-                if (window.confirm('A connection error occurred. Please try again.')) {
+                if (window.confirm('A connection error occurred. Attempting to connect again will often fix this problem. Please try again.')) {
                     window.location.href = '/';
                 }
             });
