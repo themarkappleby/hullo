@@ -33,10 +33,18 @@ export default function LocalParticipant({ octree, onMove }) {
 
   function controls(camera, delta, playerVelocity, playerOnFloor, playerDirection) {
     const speedDelta = delta * (playerOnFloor ? 25 : 8)
-    keyboard['KeyA'] && playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(-speedDelta))
-    keyboard['KeyD'] && playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(speedDelta))
-    keyboard['KeyW'] && playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(speedDelta))
-    keyboard['KeyS'] && playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(-speedDelta))
+    if (keyboard['KeyW'] || keyboard['ArrowUp']) {
+      playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(speedDelta));
+    } 
+    if (keyboard['KeyA'] || keyboard['ArrowLeft']) {
+      playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(-speedDelta));
+    }
+    if (keyboard['KeyS'] || keyboard['ArrowDown']) {
+      playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(-speedDelta));
+    }
+    if (keyboard['KeyD'] || keyboard['ArrowRight']) {
+      playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(speedDelta));
+    } 
   }
 
   function updatePlayer(camera, delta, octree, capsule, playerVelocity, playerOnFloor) {
