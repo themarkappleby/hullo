@@ -24,6 +24,12 @@ const App = () => {
     })
   }
 
+  const removeParticipant = id => {
+    setParticipants(prevParticipants => {
+      return prevParticipants.filter(participant => participant.id !== id);
+    });
+  };
+
   const initLocalParticipant = (participant, stream) => {
     participant.isLocal = true;
     participant.stream = stream;
@@ -56,6 +62,7 @@ const App = () => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       })
       participant.on('stream', addParticipant);
+      participant.on('stream_inactive', removeParticipant);
       participant.on('recieve_location_data', handleIncomingLocationData);
       setInMeeting(true);
     } else {
@@ -73,6 +80,7 @@ const App = () => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
       });
       participant.on('stream', addParticipant);
+      participant.on('stream_inactive', removeParticipant);
       participant.on('recieve_location_data', handleIncomingLocationData);
       setInMeeting(true);
     } else {
