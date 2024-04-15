@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import useOctree from './useOctree'
@@ -17,6 +17,7 @@ const Meeting = ({ participants, setParticipants  }) => {
     const gltf = useGLTF('/models/scene.glb')
     const octree = useOctree(gltf.scene)
     const videos = useRef(null);
+    const [cursorLocked, setCursorLocked] = useState(true);
     const localParticipant = participants.filter(p => p.isLocal)[0]
     const remoteParticipants = participants.filter(p => !p.isLocal)
 
@@ -54,12 +55,12 @@ const Meeting = ({ participants, setParticipants  }) => {
             const video = getParticipantVideo(p.id);
             return <RemoteParticipant video={video} key={p.id} position={p.position} rotation={p.rotation} />
           })}
-          <LocalParticipant onMove={handleMove} octree={octree} />
+          <LocalParticipant cursorLocked={cursorLocked} onMove={handleMove} onLock={() => setCursorLocked(true)} onUnlock={() => setCursorLocked(false)} octree={octree} />
         </Canvas>
         <div ref={videos}>
           <Videos streams={remoteParticipants} />
         </div>
-        <HUD participants={remoteParticipants.length + 1} />
+        <HUD participants={remoteParticipants.length + 1} cursorLocked={cursorLocked} />
       </>
     )
 }

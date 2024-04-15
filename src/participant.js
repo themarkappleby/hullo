@@ -54,35 +54,39 @@ class Participant {
     initPeer() {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id, {
-                iceServers: [
-                    {
-                      urls: "stun:stun.relay.metered.ca:80",
-                    },
-                    {
-                      urls: "turn:global.relay.metered.ca:80",
-                      username: "cfd859b36d876badbf6f84c0",
-                      credential: "8+5bIpSvsOfgFFHD",
-                    },
-                    {
-                      urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                      username: "cfd859b36d876badbf6f84c0",
-                      credential: "8+5bIpSvsOfgFFHD",
-                    },
-                    {
-                      urls: "turn:global.relay.metered.ca:443",
-                      username: "cfd859b36d876badbf6f84c0",
-                      credential: "8+5bIpSvsOfgFFHD",
-                    },
-                    {
-                      urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                      username: "cfd859b36d876badbf6f84c0",
-                      credential: "8+5bIpSvsOfgFFHD",
-                    },
-                ],
+                debug: 3,
+                config: {
+                    iceServers: [
+                        {
+                            urls: "stun:stun.relay.metered.ca:80",
+                        },
+                        {
+                            urls: "turn:global.relay.metered.ca:80",
+                            username: "cfd859b36d876badbf6f84c0",
+                            credential: "8+5bIpSvsOfgFFHD",
+                        },
+                        {
+                            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                            username: "cfd859b36d876badbf6f84c0",
+                            credential: "8+5bIpSvsOfgFFHD",
+                        },
+                        {
+                            urls: "turn:global.relay.metered.ca:443",
+                            username: "cfd859b36d876badbf6f84c0",
+                            credential: "8+5bIpSvsOfgFFHD",
+                        },
+                        {
+                            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                            username: "cfd859b36d876badbf6f84c0",
+                            credential: "8+5bIpSvsOfgFFHD",
+                        },
+                    ],
+                }
             });
             this.peer.on('error', error => {
                 console.error(error)
                 if (window.confirm('A connection error occurred. Attempting to connect again will often fix this problem. Please try again.')) {
+                    // TODO, test this: this.peer.reconnect();
                     window.location.href = '/';
                 }
             });

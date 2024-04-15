@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { Capsule } from 'three/examples/jsm/math/Capsule.js'
 import { Vector3 } from 'three'
 import { useFrame } from '@react-three/fiber'
@@ -8,13 +8,18 @@ import { PointerLockControls } from '@react-three/drei'
 const GRAVITY = 30;
 const FRAME_STEPS = 5;
 
-export default function LocalParticipant({ octree, onMove }) {
+export default function LocalParticipant({ octree, cursorLocked, onMove, onLock, onUnlock }) {
   const playerOnFloor = useRef(true)
+  const controlsEl = useRef(null)
   const playerVelocity = useMemo(() => new Vector3(), [])
   const playerDirection = useMemo(() => new Vector3(), [])
   const capsule = useMemo(() => new Capsule(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.5), [])
 
   const keyboard = useKeyboard()
+
+  useEffect(() => {
+    controlsEl.current.lock();
+  }, [])
 
   function getForwardVector(camera, playerDirection) {
     camera.getWorldDirection(playerDirection)
@@ -33,18 +38,20 @@ export default function LocalParticipant({ octree, onMove }) {
 
   function controls(camera, delta, playerVelocity, playerOnFloor, playerDirection) {
     const speedDelta = delta * (playerOnFloor ? 25 : 8)
-    if (keyboard['KeyW'] || keyboard['ArrowUp']) {
-      playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(speedDelta));
-    } 
-    if (keyboard['KeyA'] || keyboard['ArrowLeft']) {
-      playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(-speedDelta));
+    if (cursorLocked) {
+      if (keyboard['KeyW'] || keyboard['ArrowUp']) {
+        playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(speedDelta));
+      } 
+      if (keyboard['KeyA'] || keyboard['ArrowLeft']) {
+        playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(-speedDelta));
+      }
+      if (keyboard['KeyS'] || keyboard['ArrowDown']) {
+        playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(-speedDelta));
+      }
+      if (keyboard['KeyD'] || keyboard['ArrowRight']) {
+        playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(speedDelta));
+      } 
     }
-    if (keyboard['KeyS'] || keyboard['ArrowDown']) {
-      playerVelocity.add(getForwardVector(camera, playerDirection).multiplyScalar(-speedDelta));
-    }
-    if (keyboard['KeyD'] || keyboard['ArrowRight']) {
-      playerVelocity.add(getSideVector(camera, playerDirection).multiplyScalar(speedDelta));
-    } 
   }
 
   function updatePlayer(camera, delta, octree, capsule, playerVelocity, playerOnFloor) {
@@ -98,6 +105,6 @@ export default function LocalParticipant({ octree, onMove }) {
   })
 
   return (
-    <PointerLockControls />
+    <PointerLockControls ref={controlsEl} onLock={onLock} onUnlock={onUnlock} selector=".cursorLockTarget" />
   )
 }

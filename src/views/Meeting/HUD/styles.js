@@ -7,85 +7,56 @@ const styles = {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.7);
-        font-size: 18px;
-        &.focused {
-            background: transparent;
+        z-index: 999;
+        overflow: hidden;
+        &.paused {
+            background: rgba(0,0,0,0.4);
+            &:before {
+                display: block;
+                content: "Click to resume";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 22px;
+                color: white;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+                pointer-events: none;
+            }
+        }
+        .cursorLockTarget {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     `,
-    prompt: css`
+    toast: css`
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        pointer-events: none;
-        .focused & {
-            display: none;
-        }
-    `,
-    participants: css`
-        background: white;
-        position: absolute;
-        bottom: 16px;
-        left: 16px;
-        padding: 16px;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    `,
-    key: css`
-        color: white;
-        padding: 10px;
-        border: 1px solid white;
-        border-radius: 8px;
-        font-family: monospace;
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-        box-shadow: 0 0 3px rgba(0,0,0,0.2);
-    `,
-    invite: css`
-        position: absolute;
-        top: 16px;
-        left: 16px;
-        color: white;
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-        .focused & {
-            display: none;
-        }
-    `,
-    esc: css`
-        position: absolute;
-        top: 16px;
-        left: 16px;
-        gap: 8px;
-        align-items: center;
-        color: white;
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-        display: none;
-        .focused & {
-            display: flex;
-        }
-    `,
-    controls: css`
-        position: absolute;
-        bottom: 16px;
         left: 50%;
         transform: translateX(-50%);
-        flex-direction: row;
-        color: white;
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-        gap: 20px;
-        display: none;
-        .focused & {
-            display: flex;
+        font-size: 22px;
+        background: white;
+        box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
+        height: 64px;
+        padding: 0 25px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.2s ease-in-out;
+        bottom: -100px;
+        &.show {
+            bottom: 50px;
         }
-        & > div {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-    `
+    `,
+    key: css`
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 8px;
+        font-family: monospace;
+    `,
 }
 
 export default styles;
