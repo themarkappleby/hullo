@@ -42,6 +42,9 @@ class Participant {
     }
 
     removeConnection(id) {
+        this.events.forEach(({event, cb}) => {
+            if (event === 'stream_inactive') cb(id)
+        })
         this.connections = this.connections.filter(con => con.peer !== id);
     }
 
@@ -97,6 +100,9 @@ class Participant {
                 connection.on('open', () => {
                     connection.send(knownIds)
                 })
+                connection.on('close', () => {
+                    this.removeConnection(connection.peer)
+                })
             });
             this.peer.on('call', call => {
                 call.answer(this.stream);
@@ -105,9 +111,6 @@ class Participant {
                         if (event === 'stream') cb({stream: s, id: call.peer})
                     })
                     s.oninactive = () => {
-                        this.events.forEach(({event, cb}) => {
-                            if (event === 'stream_inactive') cb(call.peer)
-                        })
                         this.removeConnection(call.peer)
                     }
                 });
@@ -132,15 +135,15 @@ class Participant {
                     if (event === 'stream') cb({stream: s, id: call.peer})
                 })
                 s.oninactive = () => {
-                    this.events.forEach(({event, cb}) => {
-                        if (event === 'stream_inactive') cb(call.peer)
-                    })
                     this.removeConnection(call.peer)
                 }
             });
             connection.on('open', () => {
                 this.saveConnection(connection);
                 resolve();
+            })
+            connection.on('close', () => {
+                this.removeConnection(connection.peer)
             })
         });
     }
