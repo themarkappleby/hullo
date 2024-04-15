@@ -54,7 +54,7 @@ class Participant {
     initPeer() {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id, {
-                debug: 3,
+                debug: 0, // 3 == full debug
                 config: {
                     iceServers: [
                         {

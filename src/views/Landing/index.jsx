@@ -12,6 +12,7 @@ const Landing = ({onStart, onJoin, onStream}) => {
     const [meetingCode, setMeetingCode] = useState(meetingCodeParam || '');
     const videoRef = useRef();
     const codeInputRef = useRef();
+    const pointerRef = useRef();
 
     useEffect(() => {
         navigator.mediaDevices
@@ -27,10 +28,12 @@ const Landing = ({onStart, onJoin, onStream}) => {
     }, [])
 
     const startMeeting = () => {
+        pointerRef.current.requestPointerLock();
         onStart();
     }
 
     const joinMeeting = (e) => {
+        pointerRef.current.requestPointerLock();
         e.preventDefault();
         onJoin(meetingCode);
     }
@@ -47,6 +50,7 @@ const Landing = ({onStart, onJoin, onStream}) => {
                 </div>
             </div>
             <main css={styles.main}>
+                <div ref={pointerRef} />
                 <a href="/">
                     <img css={styles.logo} src="/images/logo.svg" alt="Hullo logo" />
                 </a>
