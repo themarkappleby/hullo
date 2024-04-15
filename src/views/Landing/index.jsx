@@ -16,7 +16,15 @@ const Landing = ({onStart, onJoin, onStream}) => {
 
     useEffect(() => {
         navigator.mediaDevices
-            .getUserMedia({video: { width: 1920, height: 1080 }, audio: true})
+            .getUserMedia({
+                audio: true,
+                video: { 
+                    width: 500,
+                    height: 500,
+                    aspectRatio: 1/1,
+                    frameRate: 30,
+                },
+            })
             .then((stream) => {
                 onStream(stream);
                 videoRef.current.srcObject = stream;

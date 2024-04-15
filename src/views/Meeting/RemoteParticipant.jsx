@@ -1,12 +1,10 @@
 import * as THREE from 'three'
 
-const RATIO = 0.5625; // 16:9
-
 const RemoteParticipant = ({position, rotation, video}) => {
   return (
     <>
       <mesh position={position} rotation={rotation} >
-        <boxGeometry args={[1.2, 1.2 * RATIO, 0.05]} />
+        <boxGeometry args={[0.65, 0.65, 0.05]} />
         <meshStandardMaterial attach="material-0" color="black" />{/* right */}
         <meshStandardMaterial attach="material-1" color="black" />{/* left */}
         <meshStandardMaterial attach="material-2" color="black" />{/* top */}
