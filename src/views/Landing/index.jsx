@@ -37,13 +37,17 @@ const Landing = ({onStart, onJoin, onStream}) => {
 
     const startMeeting = () => {
         pointerRef.current.requestPointerLock();
-        onStart();
+        setTimeout(() => {
+            onStart();
+        }, 100);
     }
 
     const joinMeeting = (e) => {
-        pointerRef.current.requestPointerLock();
         e.preventDefault();
-        onJoin(meetingCode);
+        pointerRef.current.requestPointerLock();
+        setTimeout(() => {
+            onJoin(meetingCode);
+        }, 100);
     }
 
     return (
