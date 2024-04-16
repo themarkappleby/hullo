@@ -1,10 +1,13 @@
 import * as THREE from 'three'
 
+const SIZE = 1;
+const RATIO = 4 / 3;
+
 const RemoteParticipant = ({position, rotation, video}) => {
   return (
     <>
       <mesh position={position} rotation={rotation} >
-        <boxGeometry args={[0.65, 0.65, 0.05]} />
+        <boxGeometry args={[SIZE * RATIO, SIZE, 0.05]} />
         <meshStandardMaterial attach="material-0" color="black" />{/* right */}
         <meshStandardMaterial attach="material-1" color="black" />{/* left */}
         <meshStandardMaterial attach="material-2" color="black" />{/* top */}
@@ -17,16 +20,6 @@ const RemoteParticipant = ({position, rotation, video}) => {
         ) : (
             <meshStandardMaterial attach="material-5" color="black" />
         )}
-      </mesh>
-      <mesh
-        position={[
-          position[0],
-          position[1] - 0.9,
-          position[2]
-        ]}
-      >
-        <capsuleGeometry args={[0.25, 0.6, 10, 16]} />
-        <meshStandardMaterial color='black' />
       </mesh>
     </>
   )

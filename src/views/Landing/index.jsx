@@ -19,9 +19,9 @@ const Landing = ({onStart, onJoin, onStream}) => {
             .getUserMedia({
                 audio: true,
                 video: { 
-                    width: 500,
-                    height: 500,
-                    aspectRatio: 1/1,
+                    width: 640,
+                    height: 480,
+                    aspectRatio: 4/3,
                     frameRate: 30,
                 },
             })
