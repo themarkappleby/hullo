@@ -13,10 +13,13 @@ const styles = {
         align-items: center;
         justify-content: center;
         gap: 150px;
-        max-width: 1400px;
+        max-width: 970px;
         padding: 0 50px;
         margin: 0 auto;
-        @media screen and (max-width: 1080px) {
+        @media screen and (max-width: 1024px) {
+            gap: 75px;
+        }
+        @media screen and (max-width: 900px) {
             flex-direction: column-reverse;
             gap: 50px;
             height: auto;
@@ -28,8 +31,7 @@ const styles = {
         }
     `,
     preview: css`
-        max-width: 600px;
-        min-width: 300px;
+        max-width: 300px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -46,6 +48,9 @@ const styles = {
             @media screen and (max-width: 500px) {
                 font-size: 2.5rem;
             }
+            @media screen and (max-width: 320px) {
+                font-size: 1.5rem;
+            }
         }
         h2 {
             font-size: 1.5rem;
@@ -55,12 +60,15 @@ const styles = {
             @media screen and (max-width: 500px) {
                 font-size: 1.2rem;
             }
+            @media screen and (max-width: 320px) {
+                font-size: 1rem;
+            }
         }
     `,
     videoWrapper: css`
         position: relative;
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 9 / 16;
         background: black;
         border-radius: 8px;
         overflow: hidden;
@@ -68,19 +76,22 @@ const styles = {
         p {
             position: absolute;
             top: 50%;
-            transform: translateY(-50%);
-            left: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 100%;
             text-align: center;
             color: white;
             font-size: 14px;
             opacity: 0.4;
             z-index: 1;
+            padding: 20px;
+            max-width: 200px;
+            box-sizing: border-box;
         }
     `,
     video: css`
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 9 / 16;
         position: relative;
         z-index: 2;
     `,
@@ -101,6 +112,13 @@ const styles = {
         display: flex;
         flex-direction: row;
         gap: 12px;
+        flex-wrap: wrap;
+        & > button {
+            white-space: nowrap;
+        }
+        @media screen and (max-width: 400px) {
+            justify-content: center;
+        }
     `,
     inputGroup: css`
         position: relative;
