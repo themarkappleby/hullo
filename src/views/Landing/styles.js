@@ -68,7 +68,7 @@ const styles = {
     videoWrapper: css`
         position: relative;
         width: 100%;
-        aspect-ratio: 9 / 16;
+        aspect-ratio: 3 / 4;
         background: black;
         border-radius: 8px;
         overflow: hidden;
@@ -91,7 +91,7 @@ const styles = {
     `,
     video: css`
         width: 100%;
-        aspect-ratio: 9 / 16;
+        aspect-ratio: 3 / 4;
         position: relative;
         z-index: 2;
     `,

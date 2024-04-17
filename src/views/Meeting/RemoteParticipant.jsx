@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 const SIZE = 1;
-const RATIO = 9 / 16;
+const RATIO = 3 / 4;
 
 const RemoteParticipant = ({position, rotation, video}) => {
   return (
