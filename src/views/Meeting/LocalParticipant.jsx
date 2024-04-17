@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import useKeyboard from './useKeyboard'
 import { PointerLockControls } from '@react-three/drei'
 
+const HEIGHT = 0.7;
 const GRAVITY = 30;
 const FRAME_STEPS = 5;
 
@@ -13,7 +14,7 @@ export default function LocalParticipant({ octree, cursorLocked, onMove, onLock,
   const controlsEl = useRef(null)
   const playerVelocity = useMemo(() => new Vector3(), [])
   const playerDirection = useMemo(() => new Vector3(), [])
-  const capsule = useMemo(() => new Capsule(new Vector3(0, 0, 0), new Vector3(0, 0.9, 0), 0.5), [])
+  const capsule = useMemo(() => new Capsule(new Vector3(0, 0, 0), new Vector3(0, HEIGHT, 0), 0.5), [])
 
   const keyboard = useKeyboard()
 
