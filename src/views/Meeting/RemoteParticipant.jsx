@@ -2,6 +2,7 @@ import * as THREE from 'three'
 
 const SIZE = 1;
 const RATIO = 3 / 4;
+const SHADOW_HEIGHT = 1.15;
 
 const RemoteParticipant = ({position, rotation, video}) => {
   return (
@@ -23,7 +24,7 @@ const RemoteParticipant = ({position, rotation, video}) => {
       </mesh>
       <mesh rotation={[Math.PI / -2, 0, 0]} position={[
           position[0],
-          position[1] - 1.35,
+          position[1] - SHADOW_HEIGHT,
           position[2]
         ]}>
         <circleGeometry args={[0.3, 16]} />
