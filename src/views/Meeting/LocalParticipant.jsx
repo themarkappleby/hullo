@@ -13,7 +13,7 @@ export default function LocalParticipant({ octree, cursorLocked, onMove, onLock,
   const controlsEl = useRef(null)
   const playerVelocity = useMemo(() => new Vector3(), [])
   const playerDirection = useMemo(() => new Vector3(), [])
-  const capsule = useMemo(() => new Capsule(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.5), [])
+  const capsule = useMemo(() => new Capsule(new Vector3(0, 0, 0), new Vector3(0, 0.9, 0), 0.5), [])
 
   const keyboard = useKeyboard()
 
