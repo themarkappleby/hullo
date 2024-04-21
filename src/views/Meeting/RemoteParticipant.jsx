@@ -1,30 +1,31 @@
 import * as THREE from 'three'
-import RoundedRect from './RoundedRect';
+import { useGLTF } from '@react-three/drei'
 
-const SIZE = 1;
-const RATIO = 3 / 4;
-const SHADOW_HEIGHT = 1.15;
+const SHADOW_HEIGHT = 1.09;
 
 const RemoteParticipant = ({position, rotation, video}) => {
+  const gltf = useGLTF('/models/participant.glb')
   return (
     <>
-      <mesh position={position} rotation={rotation} >
-        <boxGeometry args={[SIZE * RATIO, SIZE, 0.15]} />
-        <meshStandardMaterial attach="material-0" color="black" />
-        <meshStandardMaterial attach="material-1" color="black" />
-        <meshStandardMaterial attach="material-2" color="black" />
-        <meshStandardMaterial attach="material-3" color="black" />
-        <meshStandardMaterial attach="material-4" color="black" />
+      <mesh
+        geometry={gltf.nodes.Cube.geometry}
+        scale={[0.5, 0.5, 0.5]}
+        position={position}
+        rotation={rotation}
+      >
         {video ? (
-            <meshBasicMaterial attach="material-5">
-                <videoTexture attach="map" args={[video]} generateMipmaps={false} encoding={THREE.sRGBEncoding} magFilter={THREE.LinearFilter} />
-            </meshBasicMaterial>
+          <meshBasicMaterial>
+              <videoTexture flipY={false} attach="map" args={[video]} generateMipmaps={false} encoding={THREE.sRGBEncoding} magFilter={THREE.LinearFilter} />
+          </meshBasicMaterial>
         ) : (
-            <meshStandardMaterial attach="material-5" color="black" />
+          <meshStandardMaterial attach="material-0" color="red" />
         )}
       </mesh>
-      {/* <RoundedRect position={position} rotation={rotation} width={SIZE * RATIO} height={SIZE} depth={0.15} radius={0.05} video={video} /> */}
-      <mesh rotation={[Math.PI / -2, 0, 0]} position={[
+
+      {/* Shadow */}
+      <mesh
+        rotation={[Math.PI * -0.5, 0, 0]}
+        position={[
           position[0],
           position[1] - SHADOW_HEIGHT,
           position[2]

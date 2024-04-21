@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import useKeyboard from './useKeyboard'
 import { PointerLockControls } from '@react-three/drei'
 
-const HEIGHT = 0.7;
+const HEIGHT = 0.6;
 const GRAVITY = 30;
 const FRAME_STEPS = 5;
 
