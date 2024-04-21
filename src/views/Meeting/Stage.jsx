@@ -1,7 +1,10 @@
 import { Environment } from '@react-three/drei'
 
-export default gltf => {
-  const ref = gltf.nodes.Plane
+const SIZE = 1;
+const RATIO = 3 / 4;
+
+export default ({ nodes }) => {
+  const ref = nodes.Plane
   return (
     <>
       <directionalLight

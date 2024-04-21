@@ -11,7 +11,7 @@ const styles = {
         & > div {
             position: relative;
             width: 100%;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 3 / 4;
             video {
                 background: black;
                 position: absolute;
