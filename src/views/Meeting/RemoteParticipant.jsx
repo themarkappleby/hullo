@@ -18,7 +18,7 @@ const RemoteParticipant = ({position, rotation, video}) => {
               <videoTexture flipY={false} attach="map" args={[video]} generateMipmaps={false} encoding={THREE.sRGBEncoding} magFilter={THREE.LinearFilter} />
           </meshBasicMaterial>
         ) : (
-          <meshStandardMaterial attach="material-0" color="red" />
+          <meshStandardMaterial attach="material" color="black" />
         )}
       </mesh>
 
