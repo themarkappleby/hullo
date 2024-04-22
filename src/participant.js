@@ -58,6 +58,8 @@ class Participant {
         return new Promise((resolve) => {
             this.peer = new Peer(this.id, {
                 debug: 0, // 3 == full debug
+                host: 'ec2-3-83-249-154.compute-1.amazonaws.com',
+                port: 9000,
                 config: {
                     iceServers: [
                         {

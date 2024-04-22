@@ -14,6 +14,7 @@ const App = () => {
   const [inMeeting, setInMeeting] = useState(false);
   const [stream, setStream] = useState(null);
   const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const addParticipant = s => {
     setParticipants(prevParticipants => {
@@ -55,16 +56,18 @@ const App = () => {
 
   const startMeeting = () => {
     if (stream) {
+      setLoading(true);
       const participant = new Participant(stream);
       initLocalParticipant(participant, stream);
       setParticipants([...participants, participant]);
       participant.initPeer().then(() => {
         setQueryParam({'id': participant.id.replace('hullo-', '')})
+        setInMeeting(true);
+        setLoading(false);
       })
       participant.on('stream', addParticipant);
       participant.on('stream_inactive', removeParticipant);
       participant.on('recieve_location_data', handleIncomingLocationData);
-      setInMeeting(true);
     } else {
       alert(PERMISSIONS_MSG);
     }
@@ -88,7 +91,9 @@ const App = () => {
     }
   }
 
-  if (inMeeting) {
+  if (loading) {
+    return <Spinner />
+  } else if (inMeeting) {
     return <Meeting participants={participants} setParticipants={setParticipants} />
   } else {
     return <Landing onStart={startMeeting} onJoin={joinMeeting} onStream={stream => setStream(stream)} />
