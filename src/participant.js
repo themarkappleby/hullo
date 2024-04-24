@@ -58,7 +58,6 @@ class Participant {
     initPeer() {
         const peerConfig = {
             path: '/',
-            secure: true,
             config: {
                 iceServers: [
                     {
@@ -90,8 +89,9 @@ class Participant {
 
         if (isBeta()) {
             peerConfig.debug = 3;
-            peerConfig.host = '9000-peers-peerjsserver-63g6esup1vc.ws-us110.gitpod.io';
+            peerConfig.host = 'ec2-3-83-249-154.compute-1.amazonaws.com';
             peerConfig.port = '9000';
+            peerConfig.secure = false;
         }
 
         return new Promise((resolve) => {
