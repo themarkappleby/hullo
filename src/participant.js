@@ -1,5 +1,6 @@
 import Peer from 'peerjs';
 import getRandom from './helpers/getRandom';
+import isBeta from './helpers/isBeta';
 
 const NAMESPACE = 'hullo'
 const CONNECTION_DATA_FLAG = 'c';
@@ -55,39 +56,46 @@ class Participant {
     }
 
     initPeer() {
+        const peerConfig = {
+            path: '/',
+            secure: true,
+            config: {
+                iceServers: [
+                    {
+                        urls: "stun:stun.relay.metered.ca:80",
+                    },
+                    {
+                        urls: "turn:global.relay.metered.ca:80",
+                        username: "cfd859b36d876badbf6f84c0",
+                        credential: "8+5bIpSvsOfgFFHD",
+                    },
+                    {
+                        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                        username: "cfd859b36d876badbf6f84c0",
+                        credential: "8+5bIpSvsOfgFFHD",
+                    },
+                    {
+                        urls: "turn:global.relay.metered.ca:443",
+                        username: "cfd859b36d876badbf6f84c0",
+                        credential: "8+5bIpSvsOfgFFHD",
+                    },
+                    {
+                        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                        username: "cfd859b36d876badbf6f84c0",
+                        credential: "8+5bIpSvsOfgFFHD",
+                    },
+                ],
+            }
+        }
+
+        if (isBeta()) {
+            peerConfig.debug = 3;
+            peerConfig.host = '9000-peers-peerjsserver-63g6esup1vc.ws-us110.gitpod.io';
+            peerConfig.port = '9000';
+        }
+
         return new Promise((resolve) => {
-            this.peer = new Peer(this.id, {
-                debug: 0, // 3 == full debug
-                host: 'ec2-3-83-249-154.compute-1.amazonaws.com',
-                port: 9000,
-                config: {
-                    iceServers: [
-                        {
-                            urls: "stun:stun.relay.metered.ca:80",
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:80",
-                            username: "cfd859b36d876badbf6f84c0",
-                            credential: "8+5bIpSvsOfgFFHD",
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                            username: "cfd859b36d876badbf6f84c0",
-                            credential: "8+5bIpSvsOfgFFHD",
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:443",
-                            username: "cfd859b36d876badbf6f84c0",
-                            credential: "8+5bIpSvsOfgFFHD",
-                        },
-                        {
-                            urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                            username: "cfd859b36d876badbf6f84c0",
-                            credential: "8+5bIpSvsOfgFFHD",
-                        },
-                    ],
-                }
-            });
+            this.peer = new Peer(this.id, peerConfig);
             this.peer.on('error', error => {
                 console.error(error)
                 if (window.confirm('A connection error occurred. Attempting to connect again will often fix this problem. Please try again.')) {
