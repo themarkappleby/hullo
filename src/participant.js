@@ -89,9 +89,9 @@ class Participant {
 
         if (isBeta()) {
             peerConfig.debug = 3;
-            peerConfig.host = 'ec2-3-83-249-154.compute-1.amazonaws.com';
-            peerConfig.port = '9000';
-            peerConfig.secure = false;
+            peerConfig.host = 'rally-meet.online';
+            peerConfig.port = '';
+            peerConfig.secure = true; // This is needed due to hullo.app being secure (https)
         }
 
         return new Promise((resolve) => {
