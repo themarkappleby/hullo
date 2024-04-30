@@ -57,7 +57,10 @@ class Participant {
 
     initPeer() {
         const peerConfig = {
+            host: 'rally-meet.online',
+            port: '',
             path: '/',
+            secure: true,
             config: {
                 iceServers: [
                     {
@@ -89,9 +92,6 @@ class Participant {
 
         if (isBeta()) {
             peerConfig.debug = 3;
-            peerConfig.host = 'rally-meet.online';
-            peerConfig.port = '';
-            peerConfig.secure = true; // This is needed due to hullo.app being secure (https)
         }
 
         return new Promise((resolve) => {
