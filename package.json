@@ -23,7 +23,7 @@
     "postdeploy": "aws cloudfront create-invalidation --distribution-id EW00A0KIZF8ZB --paths '/*'",
     "teardown": "aws s3 rm s3://hullo.app --recursive",
     "postteardown": "yarn postdeploy",
-    "ssh": "ssh -i \"themarkappleby.pem\" ec2-user@ec2-3-83-249-154.compute-1.amazonaws.com"
+    "ssh": "ssh -i \"themarkappleby.pem\" ec2-user@ec2-54-164-61-180.compute-1.amazonaws.com"
   },
   "repository": "https://github.com/themarkappleby/hullo.git",
   "author": "Mark Appleby <mark.appleby@shopify.com>",
