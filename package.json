@@ -19,16 +19,13 @@
     "dev": "r3f-pack start",
     "build": "rm -r build && r3f-pack build",
     "predeploy": "npm run build",
-    "deploy": "aws s3 sync build s3://hullo.app --delete",
-    "postdeploy": "aws cloudfront create-invalidation --distribution-id EW00A0KIZF8ZB --paths '/*'",
-    "teardown": "aws s3 rm s3://hullo.app --recursive",
-    "postteardown": "yarn postdeploy",
-    "ssh": "ssh -i \"themarkappleby.pem\" ec2-user@ec2-54-164-61-180.compute-1.amazonaws.com"
+    "deploy": "gh-pages -d build"
   },
   "repository": "https://github.com/themarkappleby/hullo.git",
   "author": "Mark Appleby <mark.appleby@shopify.com>",
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "^11.11.3"
+    "@emotion/react": "^11.11.3",
+    "gh-pages": "^6.3.0"
   }
 }
