@@ -1,10 +1,10 @@
 import Peer from 'peerjs';
-import getRandom from './helpers/getRandom';
-import isBeta from './helpers/isBeta';
 
 const NAMESPACE = 'hullo'
 const CONNECTION_DATA_FLAG = 'c';
 const MOVE_DATA_FLAG = 'm';
+
+const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 class Participant {
     id;
