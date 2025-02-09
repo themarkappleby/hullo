@@ -28,6 +28,7 @@ export default class MeshPeer extends Peer {
 
     connect(id) {
         console.log('connecting to', id)
+        if (this.connections.find(c => c.peer === id)) return;
         const self = this;
         const connection = super.connect(id);
         connection.on('data', (data) => {

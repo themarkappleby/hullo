@@ -33,6 +33,12 @@ joinMeetingForm.addEventListener('submit', e => {
             });
         });
     });
+    peer.on('connection', connection => {
+        document.getElementById('connections').innerHTML += `<li>${connection.peer}</li>` ;
+        connection.on('data', (data) => {
+            console.log('recieved', data)
+        });
+    });
     window.peer = peer;
 });
 

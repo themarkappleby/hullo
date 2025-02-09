@@ -116,6 +116,7 @@ class Participant {
             })
             connection.on('close', () => {
                 this.removeConnection(connection.peer)
+
             })
         });
     }
