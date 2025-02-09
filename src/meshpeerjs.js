@@ -1,5 +1,16 @@
 import Peer from 'peerjs';
 
+/** Superset of PeerJS, with mesh networking capabilities
+ * 
+ * connections: An array of connections
+ * eventListeners: An array of event listeners
+ * 
+ * broadcast: Sends a message to all connections
+ * 
+ * When a new peer connects to this instance, it automatically shares all known connections with the new peer.
+ * When this instances connects to a new peer, it automatically listens for known connections to be shared (and connects to them if necessary).
+ */
+
 export default class MeshPeer extends Peer {
     connections = [];
     eventListeners = [];
