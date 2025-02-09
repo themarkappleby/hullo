@@ -33,6 +33,7 @@ export default class MeshPeer extends Peer {
             if (data.startsWith('meshpeerjs-connections:')) {
                 const connections = data.split(':').pop().split(',')
                 connections.forEach(id => {
+                    // index.js does not know about these connections
                     self.connect(id)
                 })
             }
