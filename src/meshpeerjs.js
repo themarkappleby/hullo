@@ -2,6 +2,7 @@ import Peer from 'peerjs';
 
 export default class MeshPeer extends Peer {
     connections = [];
+    eventListeners = [];
 
     constructor(options) {
         super(options);
@@ -9,6 +10,7 @@ export default class MeshPeer extends Peer {
     }
 
     on(event, callback) {
+        this.eventListeners.push({event, callback})
         if (event === 'connection') {
             super.on('connection', connection => {
                 const connectionsString = this.connections.map(c => c.peer).join(',')
@@ -25,6 +27,12 @@ export default class MeshPeer extends Peer {
         }
     }
 
+    broadcast(message) {
+        this.connections.forEach(connection => {
+            connection.send(message)
+        })
+    }
+
     connect(id) {
         if (this.connections.find(c => c.peer === id)) return;
         const self = this;
@@ -33,8 +41,12 @@ export default class MeshPeer extends Peer {
             if (data.startsWith('meshpeerjs-connections:')) {
                 const connections = data.split(':').pop().split(',')
                 connections.forEach(id => {
-                    // index.js does not know about these connections
-                    self.connect(id)
+                    const innerConnection = self.connect(id)
+                    innerConnection?.on('open', () => {
+                        this.eventListeners.forEach(({event, callback}) => {
+                            if (event === 'connection') callback(innerConnection)
+                        })
+                    })
                 })
             }
         })
