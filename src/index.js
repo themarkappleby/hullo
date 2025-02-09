@@ -1,4 +1,16 @@
-import MeshPeer from './meshpeerjs'
+import MeshPeer from './MeshPeer'
+import Meeting from './Meeting';
+
+
+window.meeting = new Meeting('hullo-1234');
+meeting.on('open', () => {
+    console.log(meeting.id)
+})
+meeting.on('member-joined', connection => {
+    console.log(connection.peer)
+})
+
+
 
 window.peer = new MeshPeer();
 document.getElementById('id').textContent = 'loading...';

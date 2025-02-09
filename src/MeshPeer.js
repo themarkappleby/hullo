@@ -52,6 +52,7 @@ export default class MeshPeer extends Peer {
         // Create a wrapper for the connection that filters meshpeerjs messages
         const wrappedConnection = {
             ...connection,
+            send: connection.send,
             on: (event, callback) => {
                 if (event === 'data') {
                     connection.on('data', (data) => {
