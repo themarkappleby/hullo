@@ -9,6 +9,8 @@ import Peer from 'peerjs';
  * 
  * When a new peer connects to this instance, it automatically shares all known connections with the new peer.
  * When this instances connects to a new peer, it automatically listens for known connections to be shared (and connects to them if necessary).
+ * 
+ * TODO: Filter out meshpeerjs messages so that they're internal and not exposed
  */
 
 export default class MeshPeer extends Peer {
@@ -27,7 +29,6 @@ export default class MeshPeer extends Peer {
                 const connectionsString = this.connections.map(c => c.peer).join(',')
                 if (connectionsString) {
                     connection.on('open', () => {
-                        console.log('send', `meshpeerjs-connections:${connectionsString}`, connection)
                         connection.send(`meshpeerjs-connections:${connectionsString}`);
                     })
                 }
