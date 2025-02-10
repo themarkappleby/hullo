@@ -2,16 +2,24 @@ import MeshPeer from './MeshPeer'
 import Meeting from './Meeting';
 
 
-window.meeting = new Meeting('hullo-1234');
-meeting.on('open', () => {
-    console.log(meeting.id)
-})
-meeting.on('member-joined', connection => {
-    console.log(connection.peer)
-})
+const joinMeetingForm = document.getElementById('joinMeetingForm');
+joinMeetingForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const meetingId = joinMeetingForm.meetingId.value;
+    window.meeting = new Meeting(meetingId);
+    document.getElementById('id').textContent = 'loading...';
+    meeting.on('open', () => {
+        document.getElementById('id').textContent = meeting.id;
+    })
+    meeting.on('member-joined', member => {
+        document.getElementById('connections').innerHTML += `<li>${member.peer}</li>` ;
+    })
+    // meeting.on('data', data => {
+    //     document.getElementById('messages').innerHTML += `<li>${data}</li>`;
+    // })
+});
 
-
-
+/*
 window.peer = new MeshPeer();
 document.getElementById('id').textContent = 'loading...';
 peer.on('open', () => {
@@ -42,3 +50,4 @@ function handleConnection (connection) {
         document.getElementById('messages').innerHTML += `<li>${data}</li>`;
     });
 }
+*/

@@ -27,6 +27,7 @@ export default class MeshPeer extends Peer {
                 const connectionsString = this.connections.map(c => c.peer).join(',')
                 if (connectionsString) {
                     connection.on('open', () => {
+                        console.log('send', `meshpeerjs-connections:${connectionsString}`, connection)
                         connection.send(`meshpeerjs-connections:${connectionsString}`);
                     })
                 }
@@ -48,38 +49,21 @@ export default class MeshPeer extends Peer {
         if (this.connections.find(c => c.peer === id)) return;
         const self = this;
         const connection = super.connect(id);
-        
-        // Create a wrapper for the connection that filters meshpeerjs messages
-        const wrappedConnection = {
-            ...connection,
-            send: connection.send,
-            on: (event, callback) => {
-                if (event === 'data') {
-                    connection.on('data', (data) => {
-                        // Handle meshpeerjs connection messages internally
-                        if (data.startsWith('meshpeerjs-connections:')) {
-                            const connections = data.split(':').pop().split(',')
-                            connections.forEach(id => {
-                                const innerConnection = self.connect(id)
-                                innerConnection?.on('open', () => {
-                                    this.eventListeners.forEach(({event, callback}) => {
-                                        if (event === 'connection') callback(innerConnection)
-                                    })
-                                })
-                            })
-                        } else {
-                            // Forward only non-meshpeerjs messages to the callback
-                            callback(data);
-                        }
-                    });
-                } else {
-                    // For all other events, pass through directly
-                    connection.on(event, callback);
-                }
+        // Creating a wrapped version of connection that filters out meshpeerjs messages seems to result in some of the connection Prototype methods not being copied over to the wrapped version (e.g. send).
+        connection.on('data', (data) => {
+            if (data.startsWith('meshpeerjs-connections:')) {
+                const connections = data.split(':').pop().split(',')
+                connections.forEach(id => {
+                    const innerConnection = self.connect(id)
+                    innerConnection?.on('open', () => {
+                        this.eventListeners.forEach(({event, callback}) => {
+                            if (event === 'connection') callback(innerConnection)
+                        })
+                    })
+                })
             }
-        };
-
+        })
         this.connections.push(connection);
-        return wrappedConnection;
+        return connection;
     }
 }
