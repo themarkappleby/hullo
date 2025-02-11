@@ -17,7 +17,8 @@ export default class Meeting {
         this._peer = new MeshPeer(meetingId);
         this._initConnectionListener();
         this._peer.on('open', () => {
-            this.host = true;
+            this._peer.host = true;
+            this._peer.self = true;
             this.members.push(this._peer);
             this._eventListeners.forEach(({event, callback}) => {
                 if (event === 'open') callback(this);
@@ -27,6 +28,7 @@ export default class Meeting {
             if (error.type === 'unavailable-id') {
                 this._peer = new MeshPeer();
                 this._peer.on('open', () => {
+                    this._peer.self = true;
                     this.members.push(this._peer);
                     this._eventListeners.forEach(({event, callback}) => {
                         if (event === 'open') callback(this);
@@ -62,6 +64,9 @@ export default class Meeting {
     }
 
     _handleNewConnection(connection) {
+        if (connection.peer === this.id) {
+            connection.host = true;
+        }
         this.members.push(connection);
         this._eventListeners.forEach(({event, callback}) => {
             if (event === 'member-joined') callback(connection);
