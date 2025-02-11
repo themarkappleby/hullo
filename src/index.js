@@ -10,7 +10,7 @@ joinMeetingForm.addEventListener('submit', e => {
     document.getElementById('id').textContent = 'loading...';
     meeting.on('open', () => {
         document.getElementById('id').textContent = meeting.id;
-        const self = meeting.members.find(m => m.self);
+        const self = meeting.members.find(m => m.id);
         const peerIdEl = document.getElementById('peerId');
         if (self.id === meeting.id) {
             document.getElementById('peerId').textContent = 'host';
@@ -23,7 +23,6 @@ joinMeetingForm.addEventListener('submit', e => {
     })
     meeting.on('member-left', member => {
         document.getElementById('members').innerHTML = document.getElementById('members').innerHTML.replace(`<li>${member.peer}</li>`, '');
-        console.log(member)
     })
     meeting.on('data', data => {
         document.getElementById('messages').innerHTML += `<li>${data}</li>`;
