@@ -22,6 +22,7 @@ joinMeetingForm.addEventListener('submit', e => {
         document.getElementById('members').innerHTML += `<li>${member.peer}</li>` ;
     })
     meeting.on('member-left', member => {
+        console.log('left', member)
         document.getElementById('members').innerHTML = document.getElementById('members').innerHTML.replace(`<li>${member.peer}</li>`, '');
     })
     meeting.on('data', data => {

@@ -77,17 +77,22 @@ export default class Meeting {
             }
         })
         connection.on('close', () => {
-            // TODO: If host leaves, make someone else the host
             if (connection.peer === this.id) {
                 console.warn('Host left, establishing new host...')    
                 this._peer.disconnect();
-                this.members = this.members.filter(member => member !== connection);
+                this.members.forEach(member => {
+                    this._eventListeners.forEach(({event, callback}) => {
+                        if (event === 'member-left') callback(member);
+                    })
+                })
+                this.members = [];
                 this._joinMeeting(this.id);
+            } else {
+                this.members = this.members.filter(member => member !== connection);
+                this._eventListeners.forEach(({event, callback}) => {
+                    if (event === 'member-left') callback(connection);
+                })
             }
-            this.members = this.members.filter(member => member !== connection);
-            this._eventListeners.forEach(({event, callback}) => {
-                if (event === 'member-left') callback(connection);
-            })
         })
     }
 }
