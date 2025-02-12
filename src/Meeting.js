@@ -3,6 +3,15 @@ import MeshPeer from './MeshPeer';
 /** 
  * Sits on top of MeshPeer, ensures one of the present attendees always has the meeting ID.
  * Allows a mesh P2P to behave like a psuedo-meeting.
+ * 
+ * Example
+ * const meeting = new Meeting('hullo-1234');
+ * meeting.on('open', () => {
+ *   meeting.broadcast('Hello world!');
+ * })
+ * meeting.on('data', (data, member) => {  
+ *   console.log(data); // Hello world!
+ * })
  */
 
 export default class Meeting {
