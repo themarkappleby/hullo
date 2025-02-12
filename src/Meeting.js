@@ -8,6 +8,7 @@ import MeshPeer from './MeshPeer';
  * const meeting = new Meeting('hullo-1234');
  * meeting.on('open', () => {
  *   meeting.broadcast('Hello world!');
+ *   const isHost = meeting.id === meeting.self.id;
  * })
  * meeting.on('data', (data, member) => {  
  *   console.log(data); // Hello world!
@@ -15,10 +16,10 @@ import MeshPeer from './MeshPeer';
  */
 
 export default class Meeting {
-    id = null;
-    members = [];
-    _peer = null;
-    _eventListeners = [];
+    id = null; // The meeting ID
+    members = []; // An array of connections, including self
+    self = null; // This instances MeshPeer
+    _eventListeners = []; // Internal array of registered event listeners
 
     constructor(meetingId) {
         this.id = meetingId;
@@ -38,23 +39,23 @@ export default class Meeting {
     }
 
     _joinMeeting(meetingId) {
-        this._peer = new MeshPeer(meetingId);
+        this.self = new MeshPeer(meetingId);
         this._initConnectionListener();
-        this._peer.on('open', () => {
-            this.members.push(this._peer);
+        this.self.on('open', () => {
+            this.members.push(this.self);
             this._eventListeners.forEach(({event, callback}) => {
                 if (event === 'open') callback(this);
             })
         })
-        this._peer.on('error', error => {
+        this.self.on('error', error => {
             if (error.type === 'unavailable-id') {
-                this._peer = new MeshPeer();
-                this._peer.on('open', () => {
-                    this.members.push(this._peer);
+                this.self = new MeshPeer();
+                this.self.on('open', () => {
+                    this.members.push(this.self);
                     this._eventListeners.forEach(({event, callback}) => {
                         if (event === 'open') callback(this);
                     })
-                    const connection = this._peer.connect(meetingId);
+                    const connection = this.self.connect(meetingId);
                     connection.on('open', () => {
                         this._handleNewConnection(connection);
                     });
@@ -67,7 +68,7 @@ export default class Meeting {
     }
 
     _initConnectionListener() {
-        this._peer.on('connection', connection => {
+        this.self.on('connection', connection => {
             this._handleNewConnection(connection);
         })
     }
@@ -88,7 +89,7 @@ export default class Meeting {
         connection.on('close', () => {
             if (connection.peer === this.id) {
                 console.warn('Host left, establishing new host...')    
-                this._peer.disconnect();
+                this.self.destroy();
                 this.members.forEach(member => {
                     this._eventListeners.forEach(({event, callback}) => {
                         if (event === 'member-left') callback(member);
