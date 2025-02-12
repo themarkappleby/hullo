@@ -1,8 +1,6 @@
-import MeshPeer from './MeshPeer';
-
 /** 
  * Sits on top of MeshPeer, ensures one of the present attendees always has the meeting ID.
- * Allows a mesh P2P to behave like a psuedo-meeting.
+ * Allows a mesh P2P to behave like a psuedo-meeting. This is Hullo agnostic and framework agnostic.
  * 
  * Example
  * const meeting = new Meeting('hullo-1234');
@@ -14,6 +12,8 @@ import MeshPeer from './MeshPeer';
  *   console.log(data); // Hello world!
  * })
  */
+
+import MeshPeer from './MeshPeer';
 
 export default class Meeting {
     id = null; // The meeting ID
