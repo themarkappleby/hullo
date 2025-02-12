@@ -1,5 +1,6 @@
 import Meeting from './Meeting';
 
+const $ = document.querySelector.bind(document);
 window.meeting = null;
 
 const joinMeetingForm = document.getElementById('joinMeetingForm');
@@ -7,24 +8,24 @@ joinMeetingForm.addEventListener('submit', e => {
     e.preventDefault();
     const meetingId = joinMeetingForm.meetingId.value;
     meeting = new Meeting(meetingId);
-    document.getElementById('id').textContent = 'loading...';
+    $('#id').textContent = 'loading...';
     meeting.on('open', () => {
-        document.getElementById('id').textContent = meeting.id;
-        const peerIdEl = document.getElementById('peerId');
+        $('#id').textContent = meeting.id;
+        const peerIdEl = $('#peerId');
         if (meeting.self.id === meeting.id) {
-            document.getElementById('peerId').textContent = 'host';
+            $('#peerId').textContent = 'host';
         } else {
-            document.getElementById('peerId').textContent = meeting.self.id;
+            $('#peerId').textContent = meeting.self.id;
         }
     })
     meeting.on('member-joined', member => {
-        document.getElementById('members').innerHTML += `<li>${member.peer}</li>` ;
+        $('#members').innerHTML += `<li>${member.peer}</li>` ;
     })
     meeting.on('member-left', member => {
-        document.getElementById('members').innerHTML = document.getElementById('members').innerHTML.replace(`<li>${member.peer}</li>`, '');
+        $('#members').innerHTML = $('#members').innerHTML.replace(`<li>${member.peer}</li>`, '');
     })
     meeting.on('data', data => {
-        document.getElementById('messages').innerHTML += `<li>${data}</li>`;
+        $('#messages').innerHTML += `<li>${data}</li>`;
     })
 });
 
@@ -32,7 +33,7 @@ const sendMessageForm = document.getElementById('sendMessageForm');
 sendMessageForm.addEventListener('submit', e => {
     e.preventDefault();
     const message = sendMessageForm.message.value;
-    document.getElementById('messages').innerHTML += `<li>${message}</li>`;
+    $('#messages').innerHTML += `<li>${message}</li>`;
     e.target.reset();
     meeting.broadcast(message);
 });
