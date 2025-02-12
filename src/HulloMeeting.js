@@ -5,7 +5,8 @@
 
 import Meeting from './Meeting';
 
-export const NAMESPACE = 'hullo'
+const NAMESPACE = 'hullo'
+const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 export default class HulloMeeting extends Meeting {
    id = null;
