@@ -11,8 +11,13 @@ const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min
 export default class HulloMeeting extends Meeting {
    id = null;
 
-   constructor(meetingId) {
-       this.id = meetingId;
-       super(`${NAMESPACE}-${meetingId}`);
+   constructor(id) {
+        const meetingNumber = id || getRandom(100000, 999999);
+        const meetingId = `${NAMESPACE}-${meetingNumber}`;
+        super(meetingId);
+        this.id = meetingId;
+        const url = new URL(window.location.href);
+        url.searchParams.set('id', meetingNumber);
+        window.history.pushState(null, '', url.toString());
    }
 }

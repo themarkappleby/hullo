@@ -1,4 +1,5 @@
 import Meeting from './Meeting';
+import HulloMeeting from './HulloMeeting';
 
 const $ = (selector) => {
     if (selector.startsWith('#')) return document.querySelector(selector);
@@ -9,14 +10,29 @@ const meetingIdEl = $('#id');
 const peerIdEl = $('#peerId');
 const membersEl = $('#members');
 const messagesEl = $('#messages');
+const createMeetingButton = $('#createMeetingButton');
+const joinMeetingForm = $('#joinMeetingForm');
+const sendMessageForm = $('#sendMessageForm');
+const meetingId = new URLSearchParams(window.location.search).get('id');
+
+joinMeetingForm.meetingId.value = meetingId;
 
 window.meeting = null;
 
-const joinMeetingForm = document.getElementById('joinMeetingForm');
+createMeetingButton.addEventListener('click', e => {
+    meeting = new HulloMeeting();
+    startMeeting();
+});
+
 joinMeetingForm.addEventListener('submit', e => {
     e.preventDefault();
     const meetingId = joinMeetingForm.meetingId.value;
-    meeting = new Meeting(meetingId);
+    if (!meetingId) return;
+    meeting = new HulloMeeting(meetingId);
+    startMeeting();
+});
+
+function startMeeting() {
     meetingIdEl.textContent = 'loading...';
     meeting.on('open', () => {
         meetingIdEl.textContent = meeting.id;
@@ -35,9 +51,8 @@ joinMeetingForm.addEventListener('submit', e => {
     meeting.on('data', data => {
         messagesEl.innerHTML += `<li>${data}</li>`;
     })
-});
+}
 
-const sendMessageForm = document.getElementById('sendMessageForm');
 sendMessageForm.addEventListener('submit', e => {
     e.preventDefault();
     const message = sendMessageForm.message.value;
