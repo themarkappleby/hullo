@@ -95,15 +95,6 @@ const styles = {
         position: relative;
         z-index: 2;
     `,
-    notice: css`
-        border: 1px solid #90e0e0;
-        background-color: rgba(144,224,224,0.1);
-        border-radius: 14px;
-        font-size: 14px;
-        padding: 5px 10px;
-        text-align: center;
-        line-height: 1.3;
-    `,
     logo: css`
         margin-bottom: 20px;
         max-width: 120px;

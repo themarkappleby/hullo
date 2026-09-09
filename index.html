@@ -1,27 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/src/styles.css">
-    <title>Vite App</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-34XM7HKRGQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-34XM7HKRGQ');
+    </script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hullo | Spacial Video Conferencing</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   </head>
+
   <body>
-    <h2><span id="id">NA</span> (<small id="peerId"></small>)</h2>
-    <button id="createMeetingButton">Create meeting</button><br /><br />
-    <form id="joinMeetingForm">
-        <input type="text" name="meetingId" />
-        <button type="submit">Join meeting</button>
-    </form>
-    <h2>Members:</h2>
-    <ul id="members"></ul>
-    <h2>Messages:</h2>
-    <ul id="messages"></ul>
-    <form id="sendMessageForm">
-      <input type="text" name="message" />
-      <button type="submit">Send</button>
-    </form>
-    <script type="module" src="/src/index.js"></script>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>

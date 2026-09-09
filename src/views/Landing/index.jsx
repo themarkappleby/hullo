@@ -57,9 +57,6 @@ const Landing = ({onStart, onJoin, onStream}) => {
                     <video css={styles.video} ref={videoRef} muted />
                     <p>Please allow camera and microphone access</p>
                 </div>
-                <div css={styles.notice}>
-                    👋 Heads up! Once you're in a meeting, you will no longer be able to see your camera
-                </div>
             </div>
             <main css={styles.main}>
                 <div ref={pointerRef} />
@@ -73,11 +70,11 @@ const Landing = ({onStart, onJoin, onStream}) => {
                         <>
                             <form css={styles.inputGroup} onSubmit={joinMeeting}>
                                 <input value={meetingCode} onChange={(e) => {
-                                    if (e.target.value.length <= 4) {
+                                    if (/^\d{0,6}$/.test(e.target.value)) {
                                         setMeetingCode(e.target.value);
                                     }
-                                }} maxLength={4} ref={codeInputRef} type="text" placeholder="3628" />
-                                <Button type="submit" disabled={meetingCode.length !== 4}>
+                                }} maxLength={6} ref={codeInputRef} type="text" placeholder="362801" />
+                                <Button type="submit" disabled={meetingCode.length !== 6}>
                                     Join Meeting
                                 </Button>
                             </form>
